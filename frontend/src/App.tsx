@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Play, RotateCcw, AlertCircle, CheckCircle } from 'lucide-react';
+import { Upload, Play, RotateCcw, AlertCircle, CheckCircle, Film, Download } from 'lucide-react';
 import FileUploader from './components/FileUploader';
 import LogConsole from './components/LogConsole';
 import AssetGrid from './components/AssetGrid';
 import { useWebSocket } from './hooks/useWebSocket';
 
-type Status = 'idle' | 'processing' | 'ready' | 'error';
+type Status = 'idle' | 'processing' | 'ready' | 'error' | 'rendering';
 
 interface AppState {
   status: Status;
@@ -16,6 +16,8 @@ interface AppState {
   generatedCount: number;
   totalCount: number;
   error: string | null;
+  videoGenerated: boolean;
+  videoPath: string | null;
 }
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
     generatedCount: 0,
     totalCount: 0,
     error: null,
+    videoGenerated: false,
+    videoPath: null,
   });
 
   const { logs: wsLogs, status: wsStatus } = useWebSocket();
@@ -182,10 +186,45 @@ function App() {
     }
   };
 
+  const handleRenderVideo = async () => {
+    try {
+      setState((prev) => ({
+        ...prev,
+        status: 'rendering',
+        error: null,
+      }));
+
+      const res = await fetch('/api/render-video', {
+        method: 'POST',
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Render failed');
+      }
+
+      const data = await res.json();
+      setState((prev) => ({
+        ...prev,
+        status: 'ready',
+        videoGenerated: true,
+        videoPath: data.video_path,
+      }));
+    } catch (err) {
+      setState((prev) => ({
+        ...prev,
+        status: 'error',
+        error: err instanceof Error ? err.message : 'Render failed',
+      }));
+    }
+  };
+
   const getStatusColor = (status: Status) => {
     switch (status) {
       case 'processing':
         return 'bg-blue-50 border-blue-200';
+      case 'rendering':
+        return 'bg-purple-50 border-purple-200';
       case 'ready':
         return 'bg-green-50 border-green-200';
       case 'error':
@@ -199,6 +238,8 @@ function App() {
     switch (status) {
       case 'processing':
         return <div className="animate-spin h-5 w-5 text-blue-500" />;
+      case 'rendering':
+        return <div className="animate-spin h-5 w-5 text-purple-500" />;
       case 'ready':
         return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'error':
@@ -257,12 +298,33 @@ function App() {
             <div className="space-y-3">
               <button
                 onClick={handleStartGeneration}
-                disabled={state.status === 'processing'}
+                disabled={state.status === 'processing' || state.status === 'rendering'}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition"
               >
                 <Play className="h-5 w-5" />
                 Start Generation
               </button>
+
+              {state.status === 'ready' && state.assets.length > 0 && (
+                <button
+                  onClick={handleRenderVideo}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition"
+                >
+                  <Film className="h-5 w-5" />
+                  Render Video
+                </button>
+              )}
+
+              {state.videoGenerated && state.videoPath && (
+                <a
+                  href={state.videoPath}
+                  download="video.mp4"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition"
+                >
+                  <Download className="h-5 w-5" />
+                  Download Video
+                </a>
+              )}
 
               {state.status === 'error' && (
                 <button

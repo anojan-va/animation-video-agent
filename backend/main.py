@@ -1,11 +1,12 @@
 import os
 import json
 import asyncio
+import subprocess
 from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
@@ -189,5 +190,90 @@ async def get_render_config():
     return builder.final_config
 
 
+@app.post("/api/render-video")
+async def render_video():
+    """Render video using Remotion"""
+    global builder
+
+    if not builder or not builder.final_config:
+        return JSONResponse(status_code=400, content={"error": "No assets generated yet"})
+
+    try:
+        await manager.broadcast({"type": "log", "message": "🎬 Starting video rendering..."})
+
+        # Create output directory
+        output_dir = Path("/app/remotion/out")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = output_dir / "video.mp4"
+
+        # Run Remotion render command
+        cmd = [
+            "npm",
+            "run",
+            "render",
+            "--",
+            "--props",
+            json.dumps(builder.final_config),
+        ]
+
+        process = await asyncio.create_subprocess_exec(
+            *cmd,
+            cwd="/app/remotion",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        # Stream output to WebSocket
+        while True:
+            line = await process.stdout.readline()
+            if not line:
+                break
+            message = line.decode().strip()
+            if message:
+                await manager.broadcast({"type": "log", "message": f"[Remotion] {message}"})
+
+        await process.wait()
+
+        if process.returncode != 0:
+            error = await process.stderr.read()
+            error_msg = error.decode()
+            await manager.broadcast(
+                {"type": "log", "message": f"❌ Render failed: {error_msg}"}
+            )
+            return JSONResponse(status_code=500, content={"error": error_msg})
+
+        if output_file.exists():
+            await manager.broadcast(
+                {"type": "log", "message": "✓ Video rendered successfully!"}
+            )
+            return {
+                "status": "success",
+                "video_path": f"/public/video.mp4",
+                "file_size": output_file.stat().st_size,
+            }
+        else:
+            return JSONResponse(
+                status_code=500, content={"error": "Video file not created"}
+            )
+
+    except Exception as e:
+        await manager.broadcast({"type": "log", "message": f"❌ Error: {str(e)}"})
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/public/video.mp4")
+async def download_video():
+    """Download rendered video"""
+    video_path = Path("/app/remotion/out/video.mp4")
+    if not video_path.exists():
+        return JSONResponse(status_code=404, content={"error": "Video not found"})
+
+    return FileResponse(
+        path=video_path,
+        filename="video.mp4",
+        media_type="video/mp4",
+    )
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=7860)
