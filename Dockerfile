@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     libcairo2-dev \
     libpango-1.0-0 \
-    libpango-cairo-1.0-0 \
+    libpangocairo-1.0-0 \
     libgif-dev \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
