@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Upload, Play, RotateCcw, AlertCircle, CheckCircle, Film, Download } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Play, RotateCcw, AlertCircle, CheckCircle, Film, Download } from 'lucide-react';
 import FileUploader from './components/FileUploader';
 import LogConsole from './components/LogConsole';
 import AssetGrid from './components/AssetGrid';
@@ -34,7 +34,7 @@ function App() {
     videoPath: null,
   });
 
-  const { logs: wsLogs, status: wsStatus } = useWebSocket();
+  const { logs: wsLogs } = useWebSocket();
 
   useEffect(() => {
     if (wsLogs.length > 0) {

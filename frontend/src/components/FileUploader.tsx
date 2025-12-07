@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Upload, Music, FileJson } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Music, FileJson } from 'lucide-react';
 
 interface FileUploaderProps {
   onFilesSelected: (audio: File, script: File) => void;
