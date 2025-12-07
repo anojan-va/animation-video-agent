@@ -247,7 +247,9 @@ class Builder:
             for asset_type in ["avatar", "prop"]:
                 if asset_type in scene.get("assets", {}):
                     asset = scene["assets"][asset_type]
-                    asset_id = asset.get("id", f"{asset_type}_{scene.get('id')}")
+                    # Use scene index + 1 as fallback for scene ID if not present
+                    scene_id = scene.get("id", f"scene_{self.script.get('visual_track', []).index(scene) + 1}")
+                    asset_id = asset.get("id", f"{asset_type}_{scene_id}")
                     final_scene["assets"][asset_type] = {
                         "id": asset_id,
                         "prompt": asset.get("prompt"),
