@@ -27,6 +27,7 @@ COPY app.py .
 
 # Install and build frontend
 COPY frontend/package*.json ./frontend/
+COPY frontend/ ./frontend/
 WORKDIR /app/frontend
 RUN npm ci && npm run build
 
