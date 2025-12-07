@@ -1,81 +1,54 @@
 FROM node:18
 
-WORKDIR /app
-
-# Install system dependencies including Chrome dependencies
+# Install system dependencies for Chrome and Remotion
 RUN apt-get update && apt-get install -y \
     ffmpeg \
-    # Chrome dependencies
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
     libcups2 \
     libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
     libxdamage1 \
-    libxfixes3 \
     libxrandr2 \
-    libgbm1 \
+    libgbm-dev \
     libasound2 \
-    libxshmfence1 \
-    libx11-xcb1 \
-    libxcb-dri3-0 \
-    libxcb1 \
-    libx11-6 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
+    libxkbcommon0 \
     libxfixes3 \
-    libxi6 \
-    libxrender1 \
-    libxss1 \
-    libxtst6 \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator1 \
-    lsb-release \
-    xdg-utils \
-    wget \
-    # Additional dependencies
-    libglib2.0-0 \
-    libnss3-dev \
-    libnspr4 \
-    libatk-bridge2.0-0 \
-    libgtk-3-0 \
+    libxcomposite1 \
     libpango-1.0-0 \
     libcairo2 \
-    libdbus-1-3 \
-    libexpat1 \
-    libfontconfig1 \
-    libgcc1 \
-    libgconf-2-4 \
-    libgdk-pixbuf2.0-0 \
-    libgl1 \
-    libgl1-mesa-glx \
+    libxss1 \
+    fonts-liberation \
+    xdg-utils \
+    wget \
+    gconf-service \
     && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for Puppeteer/Chrome
+# Install Chrome
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb || true
+
+# Set environment variables
+ENV CHROME_BIN=/usr/bin/google-chrome
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
-ENV CHROME_BIN=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
 
-# Create a non-root user
-RUN groupadd -r remotion && useradd -r -g remotion -G audio,video remotion \
-    && mkdir -p /home/remotion/Downloads \
-    && chown -R remotion:remotion /home/remotion \
-    && chown -R remotion:remotion /app
+# Hugging Face Spaces optimizations
+ENV REMOTION_USER_POLL=1
+ENV OPENGL_DISABLE=1
+ENV NODE_OPTIONS="--max-old-space-size=1536"
 
-# Switch to non-root user
-USER remotion
+# Create app directory
+WORKDIR /app
 
-# Install Node.js dependencies
-COPY --chown=remotion:remotion package*.json ./
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
 # Copy application code
-COPY --chown=remotion:remotion . .
+COPY . .
 
 # Create output directory
 RUN mkdir -p out
@@ -83,4 +56,5 @@ RUN mkdir -p out
 # Set proper permissions
 RUN chmod -R 755 /app
 
+# Start command
 CMD ["npm", "run", "start"]
