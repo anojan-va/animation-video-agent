@@ -22,14 +22,16 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy backend code
 COPY backend/ ./backend/
 
-# Install frontend dependencies
+# Copy app.py (Hugging Face entry point)
+COPY app.py .
+
+# Install and build frontend
 COPY frontend/package*.json ./frontend/
 WORKDIR /app/frontend
-RUN npm ci
+RUN npm ci && npm run build
 
-# Build frontend
-COPY frontend/ .
-RUN npm run build
+# Verify frontend was built
+RUN ls -la /app/frontend/dist/ || echo "WARNING: Frontend dist not found"
 
 # Install remotion dependencies
 WORKDIR /app/remotion
@@ -45,5 +47,5 @@ RUN mkdir -p /app/backend/public/assets /app/backend/public/audio /app/backend/p
 
 EXPOSE 7860
 
-# Start both backend and frontend
-CMD ["python3", "backend/main.py"]
+# Start backend (which serves frontend via app.py)
+CMD ["python3", "app.py"]

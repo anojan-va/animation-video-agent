@@ -42,7 +42,13 @@ app.include_router(backend_app.router)
 
 # Serve frontend - must be last so it catches all remaining routes
 frontend_dist = Path(__file__).parent / "frontend" / "dist"
+
+print(f"Frontend dist path: {frontend_dist}")
+print(f"Frontend dist exists: {frontend_dist.exists()}")
 if frontend_dist.exists():
+    print(f"Frontend dist contents: {list(frontend_dist.glob('*'))}")
+
+if frontend_dist.exists() and (frontend_dist / "index.html").exists():
     # Serve index.html for all routes (SPA)
     @app.get("/{full_path:path}")
     async def serve_frontend(full_path: str):
@@ -51,15 +57,17 @@ if frontend_dist.exists():
             return FileResponse(file_path)
         # Return index.html for all other routes (SPA routing)
         return FileResponse(frontend_dist / "index.html")
+    print("✓ Frontend SPA routing enabled")
 else:
     # Fallback if frontend not built
+    print("⚠ Frontend not found, serving API only")
     @app.get("/")
     async def root():
         return {
             "message": "AI Kinetic Video Agent API",
             "docs": "/docs",
             "status": "running",
-            "frontend": "not built"
+            "frontend": "not built - check /docs for API"
         }
 
 if __name__ == "__main__":
