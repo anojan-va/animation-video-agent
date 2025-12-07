@@ -4,13 +4,15 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  root: '.',
+  root: resolve(__dirname, '.'),
   publicDir: 'public',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: 'index.html'
+      input: {
+        main: resolve(__dirname, 'index.html')
+      }
     }
   },
   server: {
