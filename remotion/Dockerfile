@@ -1,6 +1,26 @@
-FROM node:18
+FROM node:18-slim
 
-# Install system dependencies for Chrome and Remotion
+# Install Chrome and its dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    ca-certificates \
+    curl \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y \
+        google-chrome-stable \
+        fonts-ipafont-gothic \
+        fonts-wqy-zenhei \
+        fonts-thai-tlwg \
+        fonts-khmeros \
+        fonts-kacst \
+        fonts-freefont-ttf \
+        --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install required system libraries
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     libnss3 \
@@ -20,13 +40,8 @@ RUN apt-get update && apt-get install -y \
     libxss1 \
     fonts-liberation \
     xdg-utils \
-    wget \
     gconf-service \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb || true
 
 # Set environment variables
 ENV CHROME_BIN=/usr/bin/google-chrome
@@ -41,10 +56,8 @@ ENV NODE_OPTIONS="--max-old-space-size=1536"
 # Create app directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files and install dependencies first (for better caching)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
 # Copy application code
