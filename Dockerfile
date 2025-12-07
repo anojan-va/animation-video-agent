@@ -34,7 +34,7 @@ RUN npm run build
 # Install remotion dependencies
 WORKDIR /app/remotion
 COPY remotion/package*.json ./
-RUN npm ci
+RUN npm install
 
 # Copy remotion code
 COPY remotion/ .
