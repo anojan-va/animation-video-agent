@@ -103,20 +103,42 @@ class Builder:
                     await self._log(f"API error for {asset_id}: {response.status_code} - {response.text}")
                     return None
 
-                data = response.json()
-                
-                # Extract image URL from response
-                if "data" not in data or len(data["data"]) == 0:
-                    await self._log(f"No image data in response for {asset_id}")
-                    return None
+                try:
+                    data = response.json()
+                    
+                    # Validate API response structure
+                    if not isinstance(data, dict):
+                        raise ValueError(f"Expected dictionary response, got {type(data).__name__}")
+                        
+                    if "data" not in data or not isinstance(data["data"], list) or not data["data"]:
+                        error_msg = data.get("error", {}).get("message", "No error details provided")
+                        await self._log(f"Invalid or empty data in API response for {asset_id}: {error_msg}")
+                        await self._log(f"Full response: {data}")
+                        return None
 
-                image_url = data["data"][0]["url"]
-                await self._log(f"Generated image URL: {image_url}")
+                    # Safely get the first result
+                    first_result = data["data"][0]
+                    if not isinstance(first_result, dict) or "url" not in first_result:
+                        await self._log(f"Invalid image data format in API response for {asset_id}")
+                        return None
 
-                # Download the image
-                img_response = await client.get(image_url, timeout=30.0)
-                if img_response.status_code != 200:
-                    await self._log(f"Failed to download image for {asset_id}")
+                    image_url = first_result["url"]
+                    if not image_url or not isinstance(image_url, str):
+                        await self._log(f"Invalid image URL received for {asset_id}")
+                        return None
+
+                    await self._log(f"Generated image URL: {image_url}")
+
+                    # Download the image
+                    img_response = await client.get(image_url, timeout=30.0)
+                    if img_response.status_code != 200:
+                        await self._log(f"Failed to download image for {asset_id}. Status: {img_response.status_code}")
+                        return None
+                        
+                except (ValueError, KeyError, IndexError, AttributeError) as e:
+                    await self._log(f"Error parsing API response for {asset_id}: {str(e)}")
+                    if 'data' in locals():
+                        await self._log(f"Response data: {data}")
                     return None
 
                 return img_response.content
