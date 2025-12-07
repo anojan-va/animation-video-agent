@@ -256,20 +256,47 @@ class Builder:
 
             # Process visual track
             for scene_idx, scene in enumerate(self.script.get("visual_track", [])):
-                await self._log(f"Processing scene {scene_idx + 1}...")
-
-                for asset_type in ["avatar", "prop"]:
-                    if asset_type not in scene.get("assets", {}):
+                try:
+                    if not isinstance(scene, dict):
+                        await self._log(f"Warning: Scene {scene_idx + 1} is not a valid dictionary, skipping")
+                        continue
+                        
+                    await self._log(f"Processing scene {scene_idx + 1}...")
+                    
+                    # Ensure scene has assets dictionary
+                    if "assets" not in scene or not isinstance(scene["assets"], dict):
+                        await self._log(f"Warning: Scene {scene_idx + 1} has no valid assets, skipping")
                         continue
 
-                    asset = scene["assets"][asset_type]
-                    asset_id = asset.get("id", f"{asset_type}_{scene_idx}")
-                    prompt = asset.get("prompt", "")
+                    for asset_type in ["avatar", "prop"]:
+                        if asset_type not in scene["assets"] or not isinstance(scene["assets"][asset_type], dict):
+                            await self._log(f"No {asset_type} asset in scene {scene_idx + 1}")
+                            continue
 
-                    success = await self._generate_with_retry(prompt, asset_id)
-                    if not success:
-                        self.status = "error"
-                        return
+                        asset = scene["assets"][asset_type]
+                        if not isinstance(asset, dict):
+                            await self._log(f"Warning: {asset_type} in scene {scene_idx + 1} is not a valid asset, skipping")
+                            continue
+                            
+                        asset_id = asset.get("id", f"{asset_type}_{scene_idx}")
+                        prompt = asset.get("prompt", "")
+
+                        if not prompt:
+                            await self._log(f"Warning: No prompt provided for {asset_id} in scene {scene_idx + 1}, skipping")
+                            continue
+
+                        await self._log(f"Generating {asset_type} asset: {asset_id}")
+                        success = await self._generate_with_retry(prompt, asset_id)
+                        if not success:
+                            self.status = "error"
+                            self.error = f"Failed to generate {asset_id}"
+                            return
+                            
+                except Exception as scene_error:
+                    self.status = "error"
+                    self.error = f"Error processing scene {scene_idx + 1}: {str(scene_error)}"
+                    await self._log(f"Error processing scene {scene_idx + 1}: {str(scene_error)}")
+                    return
 
             await self._log("All assets generated successfully!")
             self.status = "ready"
