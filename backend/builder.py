@@ -126,75 +126,40 @@ class Builder:
             return None
 
     async def _remove_background(self, image_bytes: bytes, asset_id: str) -> bool:
-        """Remove background from image using Hugging Face RMBG-1.4 API"""
+        """Remove background from image using rembg library"""
         try:
             await self._log(f"Removing background for {asset_id}...")
+            
+            # Import rembg here to handle cases where it's not installed
+            try:
+                from rembg import remove
+            except ImportError:
+                await self._log("Error: rembg library not installed. Please install it with 'pip install rembg'")
+                return False
 
-            hf_token = os.getenv("HUGGINGFACE_TOKEN")
-            if not hf_token:
-                await self._log(f"Warning: HUGGINGFACE_TOKEN not set, saving image as-is")
+            try:
+                # Process the image with rembg
+                output_bytes = remove(image_bytes)
+                
+                # Save the output image
+                asset_path = Path(self.output_dir) / f"{asset_id}.png"
+                with open(asset_path, "wb") as f:
+                    f.write(output_bytes)
+                
+                self.generated_assets.append(asset_id)
+                await self._log(f"✓ Asset {asset_id} saved with transparent background")
+                return True
+                
+            except Exception as e:
+                await self._log(f"Error processing image with rembg: {str(e)}")
+                # Fallback: save original image if rembg fails
                 asset_path = Path(self.output_dir) / f"{asset_id}.png"
                 with open(asset_path, "wb") as f:
                     f.write(image_bytes)
                 self.generated_assets.append(asset_id)
-                await self._log(f"✓ Asset {asset_id} saved (no background removal)")
+                await self._log(f"✓ Asset {asset_id} saved (background removal failed)")
                 return True
-
-            # Call Hugging Face RMBG-1.4 API with retry logic
-            api_url = "https://api-inference.huggingface.co/models/briaai/RMBG-1.4"
-            headers = {"Authorization": f"Bearer {hf_token}"}
-            
-            max_retries = 5
-            for attempt in range(max_retries):
-                try:
-                    await self._log(f"Sending to Hugging Face RMBG-1.4 (Attempt {attempt + 1}/{max_retries})...")
-                    
-                    async with httpx.AsyncClient(timeout=60.0) as client:
-                        response = await client.post(
-                            api_url,
-                            headers=headers,
-                            content=image_bytes,
-                        )
-
-                        # Model is loading (cold start)
-                        if response.status_code == 503:
-                            try:
-                                error_data = response.json()
-                                estimated_time = error_data.get("estimated_time", 10)
-                            except:
-                                estimated_time = 10
-                            
-                            await self._log(f"⏳ Model loading... waiting {estimated_time}s")
-                            await asyncio.sleep(estimated_time)
-                            continue
-
-                        if response.status_code == 200:
-                            # Save transparent PNG
-                            asset_path = Path(self.output_dir) / f"{asset_id}.png"
-                            with open(asset_path, "wb") as f:
-                                f.write(response.content)
-                            
-                            self.generated_assets.append(asset_id)
-                            await self._log(f"✓ Asset {asset_id} saved with transparent background")
-                            return True
-
-                        # Other errors
-                        await self._log(f"API error: {response.status_code} - {response.text[:100]}")
-                        if attempt < max_retries - 1:
-                            await asyncio.sleep(2)
-                            continue
-                        break
-
-                except Exception as e:
-                    await self._log(f"Connection error (Attempt {attempt + 1}): {str(e)}")
-                    if attempt < max_retries - 1:
-                        await asyncio.sleep(2)
-                        continue
-                    break
-
-            await self._log(f"Failed to remove background for {asset_id} after {max_retries} attempts")
-            return False
-
+                
         except Exception as e:
             await self._log(f"Error removing background for {asset_id}: {str(e)}")
             return False
