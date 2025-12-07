@@ -201,10 +201,24 @@ async def render_video():
     try:
         await manager.broadcast({"type": "log", "message": "🎬 Starting video rendering..."})
 
-        # Create output directory
+        # Create output and public audio directories
         output_dir = Path("/app/remotion/out")
         output_dir.mkdir(parents=True, exist_ok=True)
         output_file = output_dir / "video.mp4"
+        
+        # Ensure public/audio directory exists in remotion
+        remotion_audio_dir = Path("/app/remotion/public/audio")
+        remotion_audio_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Copy audio file to remotion public directory
+        audio_src = Path(builder.audio_path)
+        if audio_src.exists():
+            import shutil
+            audio_dest = remotion_audio_dir / audio_src.name
+            shutil.copy2(audio_src, audio_dest)
+            await manager.broadcast({"type": "log", "message": f"Copied audio file to {audio_dest}"})
+        else:
+            await manager.broadcast({"type": "log", "message": f"Warning: Audio file not found at {audio_src}"})
 
         # Run Remotion render command
         cmd = [

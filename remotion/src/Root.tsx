@@ -16,7 +16,7 @@ export const RemotionRoot: React.FC = () => {
             project_settings: { fps: 30 },
             visual_track: [],
             text_track: [],
-            audio_path: '/public/audio/voice.mp3'
+            audio_path: '/public/audio/sample voice.wav'
           }
         }}
       />

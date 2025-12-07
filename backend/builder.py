@@ -325,7 +325,7 @@ class Builder:
                 "project_settings": {},
                 "visual_track": [],
                 "text_track": [],
-                "audio_path": self.audio_path,
+                "audio_path": "/public/audio/" + Path(self.audio_path).name if self.audio_path else "",
             }
             
             # Safely get project settings
