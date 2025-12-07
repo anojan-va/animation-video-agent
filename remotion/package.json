@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "remotion preview",
-    "render": "remotion render Video out/video.mp4",
+    "render": "remotion render Video out/video.mp4 --concurrency=1",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {
