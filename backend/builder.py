@@ -311,40 +311,81 @@ class Builder:
 
     async def _build_final_config(self):
         """Build final configuration with local paths for renderer"""
-        final_config = {
-            "project_settings": self.script.get("project_settings", {"fps": 30}),
-            "visual_track": [],
-            "text_track": self.script.get("text_track", []),
-            "audio_path": self.audio_path,
-        }
+        try:
+            if not hasattr(self, 'script') or self.script is None:
+                raise ValueError("Script data is missing or invalid")
+                
+            if not isinstance(self.script, dict):
+                raise ValueError(f"Expected script to be a dictionary, got {type(self.script).__name__}")
 
-        # Add local paths to visual track
-        for scene in self.script.get("visual_track", []):
-            final_scene = {
-                "id": scene.get("id"),
-                "layout": scene.get("layout"),
-                "assets": {},
+            await self._log("Building final configuration...")
+            
+            # Initialize with safe defaults
+            final_config = {
+                "project_settings": {},
+                "visual_track": [],
+                "text_track": [],
+                "audio_path": self.audio_path,
             }
+            
+            # Safely get project settings
+            if isinstance(self.script.get("project_settings"), dict):
+                final_config["project_settings"] = self.script["project_settings"]
+            else:
+                final_config["project_settings"] = {"fps": 30}
+                await self._log("Using default project settings (fps: 30)")
 
-            for asset_type in ["avatar", "prop"]:
-                if asset_type in scene.get("assets", {}):
-                    asset = scene["assets"][asset_type]
-                    # Use scene index + 1 as fallback for scene ID if not present
-                    scene_id = scene.get("id", f"scene_{self.script.get('visual_track', []).index(scene) + 1}")
-                    asset_id = asset.get("id", f"{asset_type}_{scene_id}")
-                    final_scene["assets"][asset_type] = {
-                        "id": asset_id,
-                        "prompt": asset.get("prompt"),
-                        "local_path": f"/public/assets/{asset_id}.png",
-                    }
+            # Safely get text track
+            if isinstance(self.script.get("text_track"), list):
+                final_config["text_track"] = self.script["text_track"]
+            else:
+                await self._log("No text track found in script")
 
-            final_config["visual_track"].append(final_scene)
+            # Process visual track
+            if not isinstance(self.script.get("visual_track"), list):
+                await self._log("Warning: No visual track found in script")
+                self.final_config = final_config
+                return
 
-        self.final_config = final_config
+            for scene in self.script["visual_track"]:
+                if not isinstance(scene, dict):
+                    await self._log("Warning: Invalid scene data, skipping")
+                    continue
 
-        # Save to file
-        config_path = Path(self.output_dir).parent / "final_render.json"
-        with open(config_path, "w") as f:
-            json.dump(final_config, f, indent=2)
+                # Create scene with safe defaults
+                final_scene = {
+                    "id": scene.get("id", f"scene_{len(final_config['visual_track']) + 1}"),
+                    "layout": scene.get("layout", "default"),
+                    "assets": {},
+                }
 
-        await self._log(f"Final config saved to {config_path}")
+                # Process assets if they exist
+                if isinstance(scene.get("assets"), dict):
+                    for asset_type in ["avatar", "prop"]:
+                        if asset_type in scene["assets"] and isinstance(scene["assets"][asset_type], dict):
+                            asset = scene["assets"][asset_type]
+                            asset_id = asset.get("id", f"{asset_type}_{final_scene['id']}")
+                            final_scene["assets"][asset_type] = {
+                                "id": asset_id,
+                                "prompt": asset.get("prompt", ""),
+                                "local_path": f"/public/assets/{asset_id}.png",
+                            }
+
+                final_config["visual_track"].append(final_scene)
+
+            self.final_config = final_config
+
+            # Save to file
+            try:
+                config_path = Path(self.output_dir).parent / "final_render.json"
+                with open(config_path, "w") as f:
+                    json.dump(final_config, f, indent=2)
+                await self._log(f"✓ Final config saved to {config_path}")
+            except Exception as e:
+                await self._log(f"Error saving final config: {str(e)}")
+                raise
+
+        except Exception as e:
+            error_msg = f"Error building final config: {str(e)}"
+            await self._log(error_msg)
+            raise ValueError(error_msg)
