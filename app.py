@@ -6,7 +6,6 @@ This runs the FastAPI backend with static frontend serving
 
 import os
 import sys
-import asyncio
 from pathlib import Path
 
 # Add backend to path
@@ -33,18 +32,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include all backend routes
-app.include_router(backend_app.router)
-
-# Mount backend static files
+# Mount backend static files (assets, audio, scripts)
 public_dir = Path(__file__).parent / "backend" / "public"
 public_dir.mkdir(parents=True, exist_ok=True)
 app.mount("/public", StaticFiles(directory=str(public_dir)), name="public")
 
-# Serve frontend
+# Include all backend routes (API endpoints)
+app.include_router(backend_app.router)
+
+# Serve frontend - must be last so it catches all remaining routes
 frontend_dist = Path(__file__).parent / "frontend" / "dist"
 if frontend_dist.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+    # Serve index.html for all routes (SPA)
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        file_path = frontend_dist / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        # Return index.html for all other routes (SPA routing)
+        return FileResponse(frontend_dist / "index.html")
 else:
     # Fallback if frontend not built
     @app.get("/")
@@ -52,7 +58,8 @@ else:
         return {
             "message": "AI Kinetic Video Agent API",
             "docs": "/docs",
-            "status": "running"
+            "status": "running",
+            "frontend": "not built"
         }
 
 if __name__ == "__main__":
