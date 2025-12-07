@@ -126,42 +126,75 @@ class Builder:
             return None
 
     async def _remove_background(self, image_bytes: bytes, asset_id: str) -> bool:
-        """Remove background from image using rembg library"""
-        try:
-            await self._log(f"Removing background for {asset_id}...")
+        """
+        Remove background from image using rembg library
+        
+        Args:
+            image_bytes: Raw image data as bytes
+            asset_id: Unique identifier for the asset (used for logging)
             
+        Returns:
+            bool: True if background was successfully removed or fallback was used, False on critical error
+        """
+        if not image_bytes:
+            await self._log(f"Error: Empty image data received for {asset_id}")
+            return False
+            
+        try:
             # Import rembg here to handle cases where it's not installed
             try:
-                from rembg import remove
-            except ImportError:
+                from rembg import remove, new_session
+            except ImportError as import_err:
                 await self._log("Error: rembg library not installed. Please install it with 'pip install rembg'")
                 return False
 
+            await self._log(f"[DEBUG] Starting background removal for {asset_id}...")
+            
+            # Process the image with rembg
             try:
-                # Process the image with rembg
-                output_bytes = remove(image_bytes)
+                # Use a session for better performance with multiple images
+                session = new_session()
+                output_bytes = remove(image_bytes, session=session)
+                
+                if not output_bytes:
+                    await self._log(f"Warning: Empty output from rembg for {asset_id}")
+                    raise ValueError("Empty output from rembg")
                 
                 # Save the output image
                 asset_path = Path(self.output_dir) / f"{asset_id}.png"
-                with open(asset_path, "wb") as f:
-                    f.write(output_bytes)
+                try:
+                    with open(asset_path, "wb") as f:
+                        f.write(output_bytes)
+                    
+                    # Verify the file was written
+                    if not asset_path.exists() or asset_path.stat().st_size == 0:
+                        raise IOError("Failed to write output file")
+                        
+                    self.generated_assets.append(asset_id)
+                    await self._log(f"✓ Successfully processed and saved {asset_id} with transparent background")
+                    return True
+                    
+                except IOError as io_err:
+                    await self._log(f"Error saving {asset_id}: {str(io_err)}")
+                    raise
                 
-                self.generated_assets.append(asset_id)
-                await self._log(f"✓ Asset {asset_id} saved with transparent background")
-                return True
-                
-            except Exception as e:
-                await self._log(f"Error processing image with rembg: {str(e)}")
+            except Exception as process_err:
+                await self._log(f"Error during background removal for {asset_id}: {str(process_err)}")
                 # Fallback: save original image if rembg fails
-                asset_path = Path(self.output_dir) / f"{asset_id}.png"
-                with open(asset_path, "wb") as f:
-                    f.write(image_bytes)
-                self.generated_assets.append(asset_id)
-                await self._log(f"✓ Asset {asset_id} saved (background removal failed)")
-                return True
+                try:
+                    asset_path = Path(self.output_dir) / f"{asset_id}.png"
+                    with open(asset_path, "wb") as f:
+                        f.write(image_bytes)
+                    
+                    self.generated_assets.append(asset_id)
+                    await self._log(f"✓ Saved original image for {asset_id} (background removal failed)")
+                    return True
+                except Exception as fallback_err:
+                    await self._log(f"Critical error saving fallback image for {asset_id}: {str(fallback_err)}")
+                    return False
                 
         except Exception as e:
-            await self._log(f"Error removing background for {asset_id}: {str(e)}")
+            await self._log(f"Unexpected error in _remove_background for {asset_id}: {str(e)}")
             return False
 
     async def _generate_with_retry(
