@@ -1,18 +1,27 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export default defineConfig({
   plugins: [react()],
-  root: resolve(__dirname, '.'),
-  publicDir: 'public',
+  root: __dirname,
+  publicDir: resolve(__dirname, 'public'),
   build: {
-    outDir: 'dist',
+    outDir: resolve(__dirname, 'dist'),
     emptyOutDir: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html')
       }
+    }
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
     }
   },
   server: {
