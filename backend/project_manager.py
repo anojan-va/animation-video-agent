@@ -93,6 +93,25 @@ class ProjectManager:
         if project_id in self.projects:
             self.projects[project_id].update(updates)
             self._save_projects()
+
+            # Update input_script.json if audio_path is updated
+            if "audio_path" in updates:
+                try:
+                    project_dir = self.base_dir / project_id
+                    script_path = project_dir / "input_script.json"
+                    if script_path.exists():
+                        with open(script_path, 'r') as f:
+                            script_data = json.load(f)
+                        
+                        # Extract filename and ensure it's relative path format: audio/filename.ext
+                        audio_path_str = str(updates["audio_path"])
+                        audio_filename = os.path.basename(audio_path_str)
+                        script_data["audio_path"] = f"audio/{audio_filename}"
+                        
+                        with open(script_path, 'w') as f:
+                            json.dump(script_data, f, indent=2)
+                except Exception as e:
+                    print(f"Error updating input_script.json with audio path: {str(e)}")
     
     def update_project_status(self, project_id: str, status: str, video_path: str = None, error: str = None):
         """Update project status"""

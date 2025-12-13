@@ -38,10 +38,8 @@ class Builder:
             self.script = json.load(f)
 
         # Extract audio path from script if available
-        self.audio_path = self.script.get("audio_path")
-        if self.audio_path:
-            # Convert relative path to absolute path within project
-            self.audio_path = self.project_dir / self.audio_path
+        audio_path_str = self.script.get("audio_path")
+        self.audio_path = Path(audio_path_str) if audio_path_str else None
 
         # Count total assets
         self._count_assets()
@@ -443,8 +441,8 @@ class Builder:
             final_config = {
                 "project_settings": self.script.get("project_settings", {"fps": 30, "width": 1920, "height": 1080}),
                 "scenes": self.script["scenes"],
+                "audio_path": f"audio/{self.audio_path.name}" if self.audio_path else None,
                 "subtitles": self.script["subtitles"],
-                "audio_path": str(self.audio_path) if self.audio_path else "",
             }
             await self._log("Using new schema format")
             
@@ -488,6 +486,35 @@ class Builder:
                 await self._log(f"Copied {asset_file.name} to Remotion public directory")
             
             await self._log(f"✓ Copied {assets_copied} assets to Remotion public directory")
+
+            # Copy audio file if it exists
+            if self.audio_path:
+                await self._log(f"Debug: self.project_dir: {self.project_dir}")
+                await self._log(f"Debug: self.audio_path: {self.audio_path}")
+                audio_src = self.project_dir / self.audio_path
+                await self._log(f"Debug: constructed audio_src path: {audio_src}")
+                await self._log(f"Debug: audio_src exists: {audio_src.exists()}")
+                
+                if audio_src.exists():
+                    remotion_audio_dir = project_root / "remotion" / "public" / "audio"
+                    remotion_audio_dir.mkdir(parents=True, exist_ok=True)
+                    audio_dest = remotion_audio_dir / audio_src.name
+                    import shutil
+                    shutil.copy2(audio_src, audio_dest)
+                    await self._log(f"✓ Copied audio to {audio_dest}")
+                    
+                    # Ensure final_config has the correct path for Remotion (relative to public)
+                    if self.final_config:
+                        self.final_config["audio_path"] = f"audio/{audio_src.name}"
+                else:
+                    await self._log(f"Warning: Audio file not found at {audio_src}")
+            
+            # Also copy final_render.json to remotion/props.json for preview
+            if self.final_config:
+                props_file = project_root / "remotion" / "props.json"
+                with open(props_file, "w") as f:
+                    json.dump(self.final_config, f, indent=2)
+                await self._log(f"✓ Updated remotion/props.json for preview")
             
         except Exception as e:
             await self._log(f"Error copying assets to Remotion: {str(e)}")

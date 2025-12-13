@@ -468,6 +468,10 @@ async def render_project_video(project_id: str):
                 audio_dest = remotion_audio_dir / audio_src.name
                 shutil.copy2(audio_src, audio_dest)
                 await manager.broadcast({"type": "log", "message": f"Copied audio file to {audio_dest}"})
+                
+                # Update audio_path in final_config to be relative for Remotion
+                # This ensures staticFile() works correctly in Remotion
+                final_config["audio_path"] = f"audio/{audio_src.name}"
             else:
                 await manager.broadcast({"type": "log", "message": f"Warning: Audio file not found at {audio_src}"})
         else:
@@ -570,3 +574,4 @@ async def download_video():
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=7860)
+

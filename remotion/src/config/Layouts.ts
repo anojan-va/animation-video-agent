@@ -336,5 +336,85 @@ export const LAYOUTS: Record<string, LayoutDefinition> = {
       zIndex: 20
     },
     textZone: { display: "none" }
+  },
+
+  // Aliases for compatibility
+  avatar_center: {
+    avatar: {
+      position: "absolute",
+      bottom: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      height: "100%",
+      width: "auto",
+      zIndex: 20
+    },
+    prop: { display: "none" },
+    textZone: { display: "none" }
+  },
+  prop_center: {
+    avatar: { display: "none" },
+    prop: {
+      position: "absolute",
+      bottom: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      height: "100%",
+      width: "auto",
+      zIndex: 20
+    },
+    textZone: { display: "none" }
+  },
+  text_center: {
+    avatar: { display: "none" },
+    prop: { display: "none" },
+    textZone: {
+      position: "absolute",
+      top: "15%",
+      left: "15%",
+      width: "70%",
+      height: "70%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 100
+    }
+  },
+  avatar_center_prop_left_prop_right: {
+    avatar: {
+      position: "absolute",
+      bottom: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "40%",
+      height: "85%",
+      zIndex: 20
+    },
+    prop: {
+      position: "absolute",
+      bottom: "0",
+      left: "0",
+      width: "27.5%",
+      height: "85%",
+      zIndex: 20
+    },
+    prop_secondary: {
+      position: "absolute",
+      bottom: "0",
+      right: "0",
+      width: "27.5%",
+      height: "85%",
+      zIndex: 20
+    },
+    textZone: {
+      position: "absolute",
+      top: "5%",
+      left: "0",
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      zIndex: 100
+    }
   }
 };
+

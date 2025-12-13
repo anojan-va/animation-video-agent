@@ -17,8 +17,7 @@
           "id": "no_sugar_icon",
           "prompt": "2D flat vector art, sugar cube with a red prohibited sign over it, white background",
           "anim_enter": "pop_center",
-          "anim_idle": "shake",
-          "local_path": "assets/no_sugar_icon.png"
+          "anim_idle": "shake"
         }
       ]
     },
@@ -34,8 +33,7 @@
           "id": "fit_guy_exhausted",
           "prompt": "avatar looking exhausted and bored, leaning on hand",
           "anim_enter": "slide_left",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_exhausted.png"
+          "anim_idle": "breathe"
         }
       ]
     },
@@ -51,8 +49,7 @@
           "id": "blob_character",
           "prompt": "2D flat vector art, cute but annoying yellow fat blob character jiggling, white background",
           "anim_enter": "bounce_in",
-          "anim_idle": "jiggle",
-          "local_path": "assets/blob_character.png"
+          "anim_idle": "jiggle"
         }
       ]
     },
@@ -68,8 +65,7 @@
           "id": "fit_guy_annoyed",
           "prompt": "avatar looking annoyed with hands on hips, staring at camera",
           "anim_enter": "pop_center",
-          "anim_idle": "still",
-          "local_path": "assets/fit_guy_annoyed.png"
+          "anim_idle": "still"
         }
       ]
     },
@@ -92,8 +88,7 @@
           "id": "fit_guy_sleeping",
           "prompt": "avatar with eyes closed, dreaming",
           "anim_enter": "slide_up",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_sleeping.png"
+          "anim_idle": "breathe"
         },
         {
           "type": "image",
@@ -101,8 +96,7 @@
           "id": "cake_slice",
           "prompt": "2D flat vector art, delicious slice of chocolate cake, white background",
           "anim_enter": "fade_in",
-          "anim_idle": "float",
-          "local_path": "assets/cake_slice.png"
+          "anim_idle": "float"
         }
       ]
     },
@@ -118,8 +112,7 @@
           "id": "fit_guy_explaining",
           "prompt": "avatar raising one finger in explanation, smart look",
           "anim_enter": "slide_right",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_explaining.png"
+          "anim_idle": "breathe"
         }
       ]
     },
@@ -135,8 +128,7 @@
           "id": "bunker_shield",
           "prompt": "2D flat vector art, a steel shield or bunker door with a biological hazard symbol, white background",
           "anim_enter": "scale_up",
-          "anim_idle": "pulse",
-          "local_path": "assets/bunker_shield.png"
+          "anim_idle": "pulse"
         }
       ]
     },
@@ -152,8 +144,7 @@
           "id": "molecule_defense",
           "prompt": "2D flat vector art, chemical molecules forming a wall, white background",
           "anim_enter": "slide_right",
-          "anim_idle": "spin_slow",
-          "local_path": "assets/molecule_defense.png"
+          "anim_idle": "spin_slow"
         }
       ]
     },
@@ -169,8 +160,7 @@
           "id": "fit_guy_trapped",
           "prompt": "avatar looking stuck, hands pressing against invisible glass",
           "anim_enter": "pop_center",
-          "anim_idle": "shake",
-          "local_path": "assets/fit_guy_trapped.png"
+          "anim_idle": "shake"
         }
       ]
     },
@@ -186,8 +176,7 @@
           "id": "fit_guy_snapping",
           "prompt": "avatar snapping fingers, confident expression",
           "anim_enter": "slide_left",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_snapping.png"
+          "anim_idle": "breathe"
         },
         {
           "type": "image",
@@ -195,8 +184,7 @@
           "id": "switch_on",
           "prompt": "2D flat vector art, a large electric switch flipped to ON position, glowing green, white background",
           "anim_enter": "pop_in",
-          "anim_idle": "pulse",
-          "local_path": "assets/switch_on.png"
+          "anim_idle": "pulse"
         }
       ]
     },
@@ -212,8 +200,7 @@
           "id": "fit_guy_strong",
           "prompt": "avatar flexing arm slightly, smiling confidently",
           "anim_enter": "slide_up",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_strong.png"
+          "anim_idle": "breathe"
         }
       ]
     },
@@ -229,8 +216,7 @@
           "id": "fit_guy_teaching",
           "prompt": "avatar holding a pointer stick, acting like a teacher",
           "anim_enter": "slide_left",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_teaching.png"
+          "anim_idle": "breathe"
         }
       ]
     },
@@ -253,8 +239,7 @@
           "id": "fit_guy_stop",
           "prompt": "avatar making a stop sign with hand, serious face",
           "anim_enter": "pop_center",
-          "anim_idle": "still",
-          "local_path": "assets/fit_guy_stop.png"
+          "anim_idle": "still"
         },
         {
           "type": "image",
@@ -262,8 +247,7 @@
           "id": "powder_tub",
           "prompt": "2D flat vector art, protein powder tub with a red X",
           "anim_enter": "pop_left",
-          "anim_idle": "still",
-          "local_path": "assets/powder_tub.png"
+          "anim_idle": "still"
         },
         {
           "type": "image",
@@ -271,8 +255,7 @@
           "id": "pills_bottle",
           "prompt": "2D flat vector art, medicine bottle with a red X",
           "anim_enter": "pop_right",
-          "anim_idle": "still",
-          "local_path": "assets/pills_bottle.png"
+          "anim_idle": "still"
         }
       ]
     },
@@ -288,8 +271,7 @@
           "id": "fit_guy_honest",
           "prompt": "avatar leaning forward, looking sincere and honest",
           "anim_enter": "zoom_in",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_honest.png"
+          "anim_idle": "breathe"
         }
       ]
     },
@@ -305,13 +287,11 @@
           "id": "fit_guy_ready",
           "prompt": "avatar extending hand to camera as if to shake hands",
           "anim_enter": "slide_up",
-          "anim_idle": "breathe",
-          "local_path": "assets/fit_guy_ready.png"
+          "anim_idle": "breathe"
         }
       ]
     }
   ],
-  "audio_path": "audio/audio.wav",
   "subtitles": [
     {
       "id": "sub_1_diets",
@@ -613,5 +593,6 @@
         }
       ]
     }
-  ]
+  ],
+  "audio_path": "audio/audio.wav"
 }
