@@ -21,6 +21,10 @@ interface AppState {
   projectId: string | null;
   projects: Array<{ id: string; status: string; created_at: string }>;
   showProjectsList: boolean;
+  // Enhanced progress tracking
+  currentStep: string;
+  completedSteps: string[];
+  totalSteps: string[];
 }
 
 function App() {
@@ -38,16 +42,66 @@ function App() {
     projectId: null,
     projects: [],
     showProjectsList: false,
+    // Enhanced progress tracking
+    currentStep: '',
+    completedSteps: [],
+    totalSteps: [
+      'Validating files',
+      'Creating project',
+      'Processing script',
+      'Generating avatars',
+      'Generating props',
+      'Removing backgrounds',
+      'Building configuration',
+      'Copying assets to Remotion'
+    ]
   });
 
   const { logs: wsLogs } = useWebSocket();
 
   useEffect(() => {
     if (wsLogs.length > 0) {
-      setState((prev) => ({
-        ...prev,
-        logs: [...prev.logs, ...wsLogs],
-      }));
+      setState((prev) => {
+        const newLogs = [...prev.logs, ...wsLogs];
+        
+        // Track progress from logs
+        const latestLog = wsLogs[wsLogs.length - 1];
+        let currentStep = prev.currentStep;
+        let completedSteps = [...prev.completedSteps];
+        
+        // Parse log messages to determine current step
+        if (latestLog.includes('Starting asset generation')) {
+          currentStep = 'Processing script';
+        } else if (latestLog.includes('Generating avatar')) {
+          currentStep = 'Generating avatars';
+        } else if (latestLog.includes('Generating image asset') && !latestLog.includes('avatar')) {
+          currentStep = 'Generating props';
+        } else if (latestLog.includes('background removal')) {
+          currentStep = 'Removing backgrounds';
+        } else if (latestLog.includes('Building final configuration')) {
+          currentStep = 'Building configuration';
+        } else if (latestLog.includes('Copying assets')) {
+          currentStep = 'Copying assets to Remotion';
+        } else if (latestLog.includes('All assets generated successfully')) {
+          currentStep = 'Asset generation complete';
+          // Mark all steps as complete
+          completedSteps = prev.totalSteps.filter(step => step !== 'Asset generation complete');
+        }
+        
+        // Mark step as completed when moving to next
+        if (currentStep !== prev.currentStep && prev.currentStep) {
+          if (!completedSteps.includes(prev.currentStep)) {
+            completedSteps.push(prev.currentStep);
+          }
+        }
+        
+        return {
+          ...prev,
+          logs: newLogs,
+          currentStep,
+          completedSteps
+        };
+      });
     }
   }, [wsLogs]);
 
@@ -138,6 +192,8 @@ function App() {
         status: 'processing',
         error: null,
         logs: [],
+        currentStep: 'Validating files',
+        completedSteps: [],
       }));
 
       // Read and parse script file
@@ -477,6 +533,36 @@ function App() {
                   )}
                 </div>
               </div>
+
+              {/* Progress Steps */}
+              {state.status === 'processing' && (
+                <div className="mt-4 space-y-2">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2">Progress Steps:</h4>
+                  {state.totalSteps.map((step, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center gap-2 text-sm ${
+                        state.completedSteps.includes(step)
+                          ? 'text-green-600'
+                          : state.currentStep === step
+                          ? 'text-blue-600 font-semibold'
+                          : 'text-gray-400'
+                      }`}
+                    >
+                      {state.completedSteps.includes(step) && (
+                        <CheckCircle className="h-4 w-4" />
+                      )}
+                      {state.currentStep === step && !state.completedSteps.includes(step) && (
+                        <div className="h-4 w-4 border-2 border-blue-300 rounded-full animate-pulse" />
+                      )}
+                      {!state.completedSteps.includes(step) && state.currentStep !== step && (
+                        <div className="h-4 w-4 border-2 border-gray-300 rounded-full" />
+                      )}
+                      <span>{step}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {state.error && (
                 <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded text-red-800 text-sm">

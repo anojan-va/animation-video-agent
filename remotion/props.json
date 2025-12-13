@@ -18,7 +18,7 @@
           "prompt": "2D flat vector art, stoic man with beard, black t-shirt, athletic build, standing confident with arms crossed, white background",
           "anim_enter": "slide_up",
           "anim_idle": "breathe",
-          "local_path": "assets/gym_guy_crossed_arms.png"
+          "local_path": "assets/fit_guy_ready.png"
         },
         {
           "type": "image",
@@ -27,7 +27,7 @@
           "prompt": "2D flat vector art, traditional Japanese torii gate, cherry blossom trees, serene atmosphere, white background",
           "anim_enter": "slide_right",
           "anim_idle": "float",
-          "local_path": "assets/japanese_gate.png"
+          "local_path": "assets/bunker_shield.png"
         }
       ]
     },
@@ -44,7 +44,7 @@
           "prompt": "2D flat vector art, man shrugging shoulders, confused expression, hands up, white background",
           "anim_enter": "slide_left",
           "anim_idle": "breathe",
-          "local_path": "assets/gym_guy_shrug.png"
+          "local_path": "assets/fit_guy_annoyed.png"
         },
         {
           "type": "image",
@@ -53,7 +53,7 @@
           "prompt": "2D flat vector art, complex mechanical gear system glowing blue, representing a machine, white background",
           "anim_enter": "spin_3d",
           "anim_idle": "spin_slow",
-          "local_path": "assets/gear_machine.png"
+          "local_path": "assets/molecule_defense.png"
         }
       ]
     },
@@ -70,7 +70,7 @@
           "prompt": "2D flat vector art, man pointing index finger at camera, intense serious look, white background",
           "anim_enter": "slide_up",
           "anim_idle": "breathe",
-          "local_path": "assets/gym_guy_pointing.png"
+          "local_path": "assets/fit_guy_explaining.png"
         }
       ]
     },
@@ -87,7 +87,7 @@
           "prompt": "2D flat vector art, man holding chin in thought, looking upward, white background",
           "anim_enter": "slide_left",
           "anim_idle": "breathe",
-          "local_path": "assets/gym_guy_thinking.png"
+          "local_path": "assets/fit_guy_honest.png"
         }
       ]
     }

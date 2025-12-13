@@ -1,7 +1,7 @@
 {
-  "6e83179b": {
-    "id": "6e83179b",
-    "created_at": "2025-12-13T09:51:16.045683",
+  "9bbbc867": {
+    "id": "9bbbc867",
+    "created_at": "2025-12-13T14:22:52.588502",
     "status": "completed",
     "script_data": {
       "project_settings": {
@@ -11,81 +11,287 @@
       },
       "scenes": [
         {
-          "id": "scene_01_intro",
+          "id": "scene_01_struggle_list",
           "start": 0,
-          "duration": 5,
-          "layout": "avatar_left_prop_right",
+          "duration": 2.5,
+          "layout": "prop_left_text_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "no_sugar_icon",
+              "prompt": "2D flat vector art, sugar cube with a red prohibited sign over it, white background",
+              "anim_enter": "pop_center",
+              "anim_idle": "shake"
+            }
+          ]
+        },
+        {
+          "id": "scene_02_low_fun",
+          "start": 2.5,
+          "duration": 2,
+          "layout": "avatar_left_text_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_crossed_arms",
-              "prompt": "2D flat vector art, stoic man with beard, black t-shirt, athletic build, standing confident with arms crossed, white background",
-              "anim_enter": "slide_up",
+              "id": "fit_guy_exhausted",
+              "prompt": "avatar looking exhausted and bored, leaning on hand",
+              "anim_enter": "slide_left",
               "anim_idle": "breathe"
-            },
+            }
+          ]
+        },
+        {
+          "id": "scene_03_belly_fat",
+          "start": 4.5,
+          "duration": 2.5,
+          "layout": "prop_center",
+          "elements": [
             {
               "type": "image",
               "role": "prop",
-              "id": "japanese_gate",
-              "prompt": "2D flat vector art, traditional red Japanese Torii gate, minimal design, white background",
+              "id": "blob_character",
+              "prompt": "2D flat vector art, cute but annoying yellow fat blob character jiggling, white background",
+              "anim_enter": "bounce_in",
+              "anim_idle": "jiggle"
+            }
+          ]
+        },
+        {
+          "id": "scene_04_still_rude",
+          "start": 7,
+          "duration": 1.5,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_annoyed",
+              "prompt": "avatar looking annoyed with hands on hips, staring at camera",
               "anim_enter": "pop_center",
               "anim_idle": "still"
             }
           ]
         },
         {
-          "id": "scene_02_skepticism",
-          "start": 5,
-          "duration": 4.5,
-          "layout": "text_top_avatar_bottom",
-          "elements": [
-            {
-              "type": "image",
-              "role": "avatar",
-              "id": "gym_guy_shrug",
-              "prompt": "2D flat vector art, man shrugging shoulders, confused skepticism, palms up, white background",
-              "anim_enter": "pop_bottom",
-              "anim_idle": "shake"
-            }
-          ]
+          "id": "scene_05_not_lazy",
+          "start": 8.5,
+          "duration": 2.5,
+          "layout": "text_center",
+          "elements": []
         },
         {
-          "id": "scene_03_realization",
-          "start": 9.5,
-          "duration": 2.5,
+          "id": "scene_06_cake_sleep",
+          "start": 11,
+          "duration": 2,
           "layout": "avatar_left_prop_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_pointing",
-              "prompt": "2D flat vector art, man pointing index finger at camera, intense serious look, white background",
+              "id": "fit_guy_sleeping",
+              "prompt": "avatar with eyes closed, dreaming",
               "anim_enter": "slide_up",
               "anim_idle": "breathe"
             },
             {
               "type": "image",
               "role": "prop",
-              "id": "gear_machine",
-              "prompt": "2D flat vector art, complex mechanical gear system glowing blue, representing a machine, white background",
-              "anim_enter": "spin_3d",
+              "id": "cake_slice",
+              "prompt": "2D flat vector art, delicious slice of chocolate cake, white background",
+              "anim_enter": "fade_in",
+              "anim_idle": "float"
+            }
+          ]
+        },
+        {
+          "id": "scene_07_real_reason",
+          "start": 13,
+          "duration": 3.5,
+          "layout": "avatar_right_text_left",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_explaining",
+              "prompt": "avatar raising one finger in explanation, smart look",
+              "anim_enter": "slide_right",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_08_biological_bunker",
+          "start": 16.5,
+          "duration": 3.5,
+          "layout": "text_top_prop_bottom",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "bunker_shield",
+              "prompt": "2D flat vector art, a steel shield or bunker door with a biological hazard symbol, white background",
+              "anim_enter": "scale_up",
+              "anim_idle": "pulse"
+            }
+          ]
+        },
+        {
+          "id": "scene_09_hormones",
+          "start": 20,
+          "duration": 3,
+          "layout": "prop_right_text_left",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "molecule_defense",
+              "prompt": "2D flat vector art, chemical molecules forming a wall, white background",
+              "anim_enter": "slide_right",
               "anim_idle": "spin_slow"
             }
           ]
         },
         {
-          "id": "scene_04_examples",
-          "start": 12,
-          "duration": 6,
+          "id": "scene_10_stay_stuck",
+          "start": 23,
+          "duration": 3,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_trapped",
+              "prompt": "avatar looking stuck, hands pressing against invisible glass",
+              "anim_enter": "pop_center",
+              "anim_idle": "shake"
+            }
+          ]
+        },
+        {
+          "id": "scene_11_metabolic_switch",
+          "start": 26,
+          "duration": 2.5,
+          "layout": "avatar_left_prop_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_snapping",
+              "prompt": "avatar snapping fingers, confident expression",
+              "anim_enter": "slide_left",
+              "anim_idle": "breathe"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "switch_on",
+              "prompt": "2D flat vector art, a large electric switch flipped to ON position, glowing green, white background",
+              "anim_enter": "pop_in",
+              "anim_idle": "pulse"
+            }
+          ]
+        },
+        {
+          "id": "scene_12_fat_chance",
+          "start": 28.5,
+          "duration": 2.5,
+          "layout": "text_top_avatar_bottom",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_strong",
+              "prompt": "avatar flexing arm slightly, smiling confidently",
+              "anim_enter": "slide_up",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_13_breakdown",
+          "start": 31,
+          "duration": 3.5,
           "layout": "avatar_left_text_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_thinking",
-              "prompt": "2D flat vector art, man holding chin in thought, looking upward, white background",
+              "id": "fit_guy_teaching",
+              "prompt": "avatar holding a pointer stick, acting like a teacher",
               "anim_enter": "slide_left",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_14_mistakes",
+          "start": 34.5,
+          "duration": 2.5,
+          "layout": "text_center",
+          "elements": []
+        },
+        {
+          "id": "scene_15_no_magic",
+          "start": 37,
+          "duration": 3,
+          "layout": "avatar_center_prop_left_prop_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_stop",
+              "prompt": "avatar making a stop sign with hand, serious face",
+              "anim_enter": "pop_center",
+              "anim_idle": "still"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "powder_tub",
+              "prompt": "2D flat vector art, protein powder tub with a red X",
+              "anim_enter": "pop_left",
+              "anim_idle": "still"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "pills_bottle",
+              "prompt": "2D flat vector art, medicine bottle with a red X",
+              "anim_enter": "pop_right",
+              "anim_idle": "still"
+            }
+          ]
+        },
+        {
+          "id": "scene_16_biology",
+          "start": 40,
+          "duration": 1.5,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_honest",
+              "prompt": "avatar leaning forward, looking sincere and honest",
+              "anim_enter": "zoom_in",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_17_outro",
+          "start": 41.5,
+          "duration": 2.5,
+          "layout": "avatar_middle_text_sides",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_ready",
+              "prompt": "avatar extending hand to camera as if to shake hands",
+              "anim_enter": "slide_up",
               "anim_idle": "breathe"
             }
           ]
@@ -93,32 +299,32 @@
       ],
       "subtitles": [
         {
-          "id": "sub_1_intro",
+          "id": "sub_1_diets",
           "mode": "composed_stack",
-          "container_end": 4.8,
+          "container_end": 4.5,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "There's",
+                  "text": "Cut",
                   "start": 0,
-                  "end": 0.2
+                  "end": 0.3
                 },
                 {
-                  "text": "a",
-                  "start": 0.2,
-                  "end": 0.4
-                },
-                {
-                  "text": "Japanese",
-                  "start": 0.4,
+                  "text": "Sugar,",
+                  "start": 0.3,
                   "end": 0.8
                 },
                 {
-                  "text": "System",
+                  "text": "Tried",
                   "start": 0.8,
-                  "end": 1.2
+                  "end": 1.1
+                },
+                {
+                  "text": "Fasting...",
+                  "start": 1.1,
+                  "end": 1.8
                 }
               ]
             },
@@ -126,13 +332,13 @@
               "style": "impact_big_red",
               "words": [
                 {
-                  "text": "DISCIPLINE",
-                  "start": 1.5,
-                  "end": 2.5
+                  "text": "LOW",
+                  "start": 2.5,
+                  "end": 2.9
                 },
                 {
-                  "text": "MACHINES",
-                  "start": 2.5,
+                  "text": "FUN",
+                  "start": 3.8,
                   "end": 4.5
                 }
               ]
@@ -140,22 +346,32 @@
           ]
         },
         {
-          "id": "sub_2_skeptic",
+          "id": "sub_2_belly",
           "mode": "composed_stack",
-          "container_end": 9.5,
+          "container_end": 8.5,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "So",
-                  "start": 5.8,
-                  "end": 6.2
+                  "text": "But",
+                  "start": 4.5,
+                  "end": 4.7
                 },
                 {
-                  "text": "Simple...",
-                  "start": 6.2,
-                  "end": 6.8
+                  "text": "that",
+                  "start": 4.7,
+                  "end": 4.9
+                },
+                {
+                  "text": "belly",
+                  "start": 4.9,
+                  "end": 5.2
+                },
+                {
+                  "text": "fat?",
+                  "start": 5.2,
+                  "end": 5.5
                 }
               ]
             },
@@ -163,59 +379,41 @@
               "style": "impact_big_red",
               "words": [
                 {
-                  "text": "WON'T",
-                  "start": 7.5,
-                  "end": 8
+                  "text": "STILL",
+                  "start": 5.8,
+                  "end": 6.2
                 },
                 {
-                  "text": "WORK?",
-                  "start": 8,
-                  "end": 9
+                  "text": "RUDE.",
+                  "start": 7.5,
+                  "end": 8.5
                 }
               ]
             }
           ]
         },
         {
-          "id": "sub_3_turn",
-          "mode": "word_by_word",
-          "style": "highlight_green",
-          "container_end": 10.9,
-          "words": [
-            {
-              "text": "UNTIL",
-              "start": 10,
-              "end": 10.3
-            },
-            {
-              "text": "IT",
-              "start": 10.3,
-              "end": 10.6
-            },
-            {
-              "text": "DOES.",
-              "start": 10.6,
-              "end": 10.9
-            }
-          ]
-        },
-        {
-          "id": "sub_4_question",
+          "id": "sub_3_not_lazy",
           "mode": "composed_stack",
-          "container_end": 13.8,
+          "container_end": 11,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "Seeks",
-                  "start": 12,
-                  "end": 12.5
+                  "text": "It's",
+                  "start": 8.5,
+                  "end": 8.7
                 },
                 {
-                  "text": "More",
-                  "start": 12.5,
-                  "end": 12.8
+                  "text": "not",
+                  "start": 8.7,
+                  "end": 8.9
+                },
+                {
+                  "text": "because...",
+                  "start": 8.9,
+                  "end": 9.2
                 }
               ]
             },
@@ -223,31 +421,180 @@
               "style": "impact_big_black",
               "words": [
                 {
-                  "text": "DISCIPLINE?",
-                  "start": 12.8,
-                  "end": 13.8
+                  "text": "LAZY",
+                  "start": 9.4,
+                  "end": 9.9
+                },
+                {
+                  "text": "OR",
+                  "start": 9.9,
+                  "end": 10.2
+                },
+                {
+                  "text": "WEAK",
+                  "start": 10.2,
+                  "end": 10.8
                 }
               ]
             }
           ]
         },
         {
-          "id": "sub_5_checklist",
+          "id": "sub_4_favor",
+          "mode": "composed_stack",
+          "container_end": 16.5,
+          "lines": [
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Body",
+                  "start": 13.9,
+                  "end": 14.3
+                },
+                {
+                  "text": "thinks",
+                  "start": 14.3,
+                  "end": 14.6
+                }
+              ]
+            },
+            {
+              "style": "highlight_green",
+              "words": [
+                {
+                  "text": "DOING",
+                  "start": 15,
+                  "end": 15.5
+                },
+                {
+                  "text": "A",
+                  "start": 15.5,
+                  "end": 15.7
+                },
+                {
+                  "text": "FAVOR",
+                  "start": 15.7,
+                  "end": 16.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sub_5_bunker",
+          "mode": "word_by_word",
+          "style": "impact_big_red",
+          "container_end": 20,
+          "words": [
+            {
+              "text": "BIOLOGICAL",
+              "start": 18.5,
+              "end": 19.2
+            },
+            {
+              "text": "BUNKER",
+              "start": 19.2,
+              "end": 20
+            }
+          ]
+        },
+        {
+          "id": "sub_6_switch",
+          "mode": "composed_stack",
+          "container_end": 31,
+          "lines": [
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Flip",
+                  "start": 26.5,
+                  "end": 26.8
+                },
+                {
+                  "text": "the",
+                  "start": 26.8,
+                  "end": 27
+                },
+                {
+                  "text": "switch...",
+                  "start": 27,
+                  "end": 27.5
+                }
+              ]
+            },
+            {
+              "style": "highlight_green",
+              "words": [
+                {
+                  "text": "NO",
+                  "start": 28.5,
+                  "end": 29
+                },
+                {
+                  "text": "CHANCE",
+                  "start": 30,
+                  "end": 30.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sub_7_mistakes",
           "mode": "vertical_list",
           "style": "checklist_yellow",
-          "container_end": 17.5,
+          "container_end": 37,
           "items": [
             {
-              "text": "1. Study for Exams",
-              "start": 14.5
+              "text": "1. Target Belly Fat",
+              "start": 32.5
             },
             {
-              "text": "2. Build Business",
-              "start": 15.5
+              "text": "2. Three Mistakes",
+              "start": 35
             },
             {
-              "text": "3. Get Fit",
-              "start": 16.5
+              "text": "3. Fix It",
+              "start": 36.5
+            }
+          ]
+        },
+        {
+          "id": "sub_8_bs",
+          "mode": "composed_stack",
+          "container_end": 41.5,
+          "lines": [
+            {
+              "style": "impact_big_red",
+              "words": [
+                {
+                  "text": "NO",
+                  "start": 37,
+                  "end": 37.5
+                },
+                {
+                  "text": "PILLS",
+                  "start": 38,
+                  "end": 38.5
+                }
+              ]
+            },
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Just",
+                  "start": 39,
+                  "end": 39.3
+                },
+                {
+                  "text": "Biology.",
+                  "start": 39.3,
+                  "end": 40
+                }
+              ]
             }
           ]
         }
@@ -255,11 +602,11 @@
     },
     "video_path": null,
     "error": null,
-    "audio_path": "projects\\6e83179b\\audio\\audio.wav"
+    "audio_path": "projects\\9bbbc867\\audio\\audio.wav"
   },
-  "54ba6341": {
-    "id": "54ba6341",
-    "created_at": "2025-12-13T10:08:51.495268",
+  "eb7d70f0": {
+    "id": "eb7d70f0",
+    "created_at": "2025-12-13T14:40:41.973880",
     "status": "completed",
     "script_data": {
       "project_settings": {
@@ -269,81 +616,287 @@
       },
       "scenes": [
         {
-          "id": "scene_01_intro",
+          "id": "scene_01_struggle_list",
           "start": 0,
-          "duration": 5,
-          "layout": "avatar_left_prop_right",
+          "duration": 2.5,
+          "layout": "prop_left_text_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "no_sugar_icon",
+              "prompt": "2D flat vector art, sugar cube with a red prohibited sign over it, white background",
+              "anim_enter": "pop_center",
+              "anim_idle": "shake"
+            }
+          ]
+        },
+        {
+          "id": "scene_02_low_fun",
+          "start": 2.5,
+          "duration": 2,
+          "layout": "avatar_left_text_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_crossed_arms",
-              "prompt": "2D flat vector art, stoic man with beard, black t-shirt, athletic build, standing confident with arms crossed, white background",
-              "anim_enter": "slide_up",
+              "id": "fit_guy_exhausted",
+              "prompt": "avatar looking exhausted and bored, leaning on hand",
+              "anim_enter": "slide_left",
               "anim_idle": "breathe"
-            },
+            }
+          ]
+        },
+        {
+          "id": "scene_03_belly_fat",
+          "start": 4.5,
+          "duration": 2.5,
+          "layout": "prop_center",
+          "elements": [
             {
               "type": "image",
               "role": "prop",
-              "id": "japanese_gate",
-              "prompt": "2D flat vector art, traditional red Japanese Torii gate, minimal design, white background",
+              "id": "blob_character",
+              "prompt": "2D flat vector art, cute but annoying yellow fat blob character jiggling, white background",
+              "anim_enter": "bounce_in",
+              "anim_idle": "jiggle"
+            }
+          ]
+        },
+        {
+          "id": "scene_04_still_rude",
+          "start": 7,
+          "duration": 1.5,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_annoyed",
+              "prompt": "avatar looking annoyed with hands on hips, staring at camera",
               "anim_enter": "pop_center",
               "anim_idle": "still"
             }
           ]
         },
         {
-          "id": "scene_02_skepticism",
-          "start": 5,
-          "duration": 4.5,
-          "layout": "text_top_avatar_bottom",
-          "elements": [
-            {
-              "type": "image",
-              "role": "avatar",
-              "id": "gym_guy_shrug",
-              "prompt": "2D flat vector art, man shrugging shoulders, confused skepticism, palms up, white background",
-              "anim_enter": "pop_bottom",
-              "anim_idle": "shake"
-            }
-          ]
+          "id": "scene_05_not_lazy",
+          "start": 8.5,
+          "duration": 2.5,
+          "layout": "text_center",
+          "elements": []
         },
         {
-          "id": "scene_03_realization",
-          "start": 9.5,
-          "duration": 2.5,
+          "id": "scene_06_cake_sleep",
+          "start": 11,
+          "duration": 2,
           "layout": "avatar_left_prop_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_pointing",
-              "prompt": "2D flat vector art, man pointing index finger at camera, intense serious look, white background",
+              "id": "fit_guy_sleeping",
+              "prompt": "avatar with eyes closed, dreaming",
               "anim_enter": "slide_up",
               "anim_idle": "breathe"
             },
             {
               "type": "image",
               "role": "prop",
-              "id": "gear_machine",
-              "prompt": "2D flat vector art, complex mechanical gear system glowing blue, representing a machine, white background",
-              "anim_enter": "spin_3d",
+              "id": "cake_slice",
+              "prompt": "2D flat vector art, delicious slice of chocolate cake, white background",
+              "anim_enter": "fade_in",
+              "anim_idle": "float"
+            }
+          ]
+        },
+        {
+          "id": "scene_07_real_reason",
+          "start": 13,
+          "duration": 3.5,
+          "layout": "avatar_right_text_left",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_explaining",
+              "prompt": "avatar raising one finger in explanation, smart look",
+              "anim_enter": "slide_right",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_08_biological_bunker",
+          "start": 16.5,
+          "duration": 3.5,
+          "layout": "text_top_prop_bottom",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "bunker_shield",
+              "prompt": "2D flat vector art, a steel shield or bunker door with a biological hazard symbol, white background",
+              "anim_enter": "scale_up",
+              "anim_idle": "pulse"
+            }
+          ]
+        },
+        {
+          "id": "scene_09_hormones",
+          "start": 20,
+          "duration": 3,
+          "layout": "prop_right_text_left",
+          "elements": [
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "molecule_defense",
+              "prompt": "2D flat vector art, chemical molecules forming a wall, white background",
+              "anim_enter": "slide_right",
               "anim_idle": "spin_slow"
             }
           ]
         },
         {
-          "id": "scene_04_examples",
-          "start": 12,
-          "duration": 6,
+          "id": "scene_10_stay_stuck",
+          "start": 23,
+          "duration": 3,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_trapped",
+              "prompt": "avatar looking stuck, hands pressing against invisible glass",
+              "anim_enter": "pop_center",
+              "anim_idle": "shake"
+            }
+          ]
+        },
+        {
+          "id": "scene_11_metabolic_switch",
+          "start": 26,
+          "duration": 2.5,
+          "layout": "avatar_left_prop_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_snapping",
+              "prompt": "avatar snapping fingers, confident expression",
+              "anim_enter": "slide_left",
+              "anim_idle": "breathe"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "switch_on",
+              "prompt": "2D flat vector art, a large electric switch flipped to ON position, glowing green, white background",
+              "anim_enter": "pop_in",
+              "anim_idle": "pulse"
+            }
+          ]
+        },
+        {
+          "id": "scene_12_fat_chance",
+          "start": 28.5,
+          "duration": 2.5,
+          "layout": "text_top_avatar_bottom",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_strong",
+              "prompt": "avatar flexing arm slightly, smiling confidently",
+              "anim_enter": "slide_up",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_13_breakdown",
+          "start": 31,
+          "duration": 3.5,
           "layout": "avatar_left_text_right",
           "elements": [
             {
               "type": "image",
               "role": "avatar",
-              "id": "gym_guy_thinking",
-              "prompt": "2D flat vector art, man holding chin in thought, looking upward, white background",
+              "id": "fit_guy_teaching",
+              "prompt": "avatar holding a pointer stick, acting like a teacher",
               "anim_enter": "slide_left",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_14_mistakes",
+          "start": 34.5,
+          "duration": 2.5,
+          "layout": "text_center",
+          "elements": []
+        },
+        {
+          "id": "scene_15_no_magic",
+          "start": 37,
+          "duration": 3,
+          "layout": "avatar_center_prop_left_prop_right",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_stop",
+              "prompt": "avatar making a stop sign with hand, serious face",
+              "anim_enter": "pop_center",
+              "anim_idle": "still"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "powder_tub",
+              "prompt": "2D flat vector art, protein powder tub with a red X",
+              "anim_enter": "pop_left",
+              "anim_idle": "still"
+            },
+            {
+              "type": "image",
+              "role": "prop",
+              "id": "pills_bottle",
+              "prompt": "2D flat vector art, medicine bottle with a red X",
+              "anim_enter": "pop_right",
+              "anim_idle": "still"
+            }
+          ]
+        },
+        {
+          "id": "scene_16_biology",
+          "start": 40,
+          "duration": 1.5,
+          "layout": "avatar_center",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_honest",
+              "prompt": "avatar leaning forward, looking sincere and honest",
+              "anim_enter": "zoom_in",
+              "anim_idle": "breathe"
+            }
+          ]
+        },
+        {
+          "id": "scene_17_outro",
+          "start": 41.5,
+          "duration": 2.5,
+          "layout": "avatar_middle_text_sides",
+          "elements": [
+            {
+              "type": "image",
+              "role": "avatar",
+              "id": "fit_guy_ready",
+              "prompt": "avatar extending hand to camera as if to shake hands",
+              "anim_enter": "slide_up",
               "anim_idle": "breathe"
             }
           ]
@@ -351,32 +904,32 @@
       ],
       "subtitles": [
         {
-          "id": "sub_1_intro",
+          "id": "sub_1_diets",
           "mode": "composed_stack",
-          "container_end": 4.8,
+          "container_end": 4.5,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "There's",
+                  "text": "Cut",
                   "start": 0,
-                  "end": 0.2
+                  "end": 0.3
                 },
                 {
-                  "text": "a",
-                  "start": 0.2,
-                  "end": 0.4
-                },
-                {
-                  "text": "Japanese",
-                  "start": 0.4,
+                  "text": "Sugar,",
+                  "start": 0.3,
                   "end": 0.8
                 },
                 {
-                  "text": "System",
+                  "text": "Tried",
                   "start": 0.8,
-                  "end": 1.2
+                  "end": 1.1
+                },
+                {
+                  "text": "Fasting...",
+                  "start": 1.1,
+                  "end": 1.8
                 }
               ]
             },
@@ -384,13 +937,13 @@
               "style": "impact_big_red",
               "words": [
                 {
-                  "text": "DISCIPLINE",
-                  "start": 1.5,
-                  "end": 2.5
+                  "text": "LOW",
+                  "start": 2.5,
+                  "end": 2.9
                 },
                 {
-                  "text": "MACHINES",
-                  "start": 2.5,
+                  "text": "FUN",
+                  "start": 3.8,
                   "end": 4.5
                 }
               ]
@@ -398,22 +951,32 @@
           ]
         },
         {
-          "id": "sub_2_skeptic",
+          "id": "sub_2_belly",
           "mode": "composed_stack",
-          "container_end": 9.5,
+          "container_end": 8.5,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "So",
-                  "start": 5.8,
-                  "end": 6.2
+                  "text": "But",
+                  "start": 4.5,
+                  "end": 4.7
                 },
                 {
-                  "text": "Simple...",
-                  "start": 6.2,
-                  "end": 6.8
+                  "text": "that",
+                  "start": 4.7,
+                  "end": 4.9
+                },
+                {
+                  "text": "belly",
+                  "start": 4.9,
+                  "end": 5.2
+                },
+                {
+                  "text": "fat?",
+                  "start": 5.2,
+                  "end": 5.5
                 }
               ]
             },
@@ -421,59 +984,41 @@
               "style": "impact_big_red",
               "words": [
                 {
-                  "text": "WON'T",
-                  "start": 7.5,
-                  "end": 8
+                  "text": "STILL",
+                  "start": 5.8,
+                  "end": 6.2
                 },
                 {
-                  "text": "WORK?",
-                  "start": 8,
-                  "end": 9
+                  "text": "RUDE.",
+                  "start": 7.5,
+                  "end": 8.5
                 }
               ]
             }
           ]
         },
         {
-          "id": "sub_3_turn",
-          "mode": "word_by_word",
-          "style": "highlight_green",
-          "container_end": 10.9,
-          "words": [
-            {
-              "text": "UNTIL",
-              "start": 10,
-              "end": 10.3
-            },
-            {
-              "text": "IT",
-              "start": 10.3,
-              "end": 10.6
-            },
-            {
-              "text": "DOES.",
-              "start": 10.6,
-              "end": 10.9
-            }
-          ]
-        },
-        {
-          "id": "sub_4_question",
+          "id": "sub_3_not_lazy",
           "mode": "composed_stack",
-          "container_end": 13.8,
+          "container_end": 11,
           "lines": [
             {
               "style": "label_small_black",
               "words": [
                 {
-                  "text": "Seeks",
-                  "start": 12,
-                  "end": 12.5
+                  "text": "It's",
+                  "start": 8.5,
+                  "end": 8.7
                 },
                 {
-                  "text": "More",
-                  "start": 12.5,
-                  "end": 12.8
+                  "text": "not",
+                  "start": 8.7,
+                  "end": 8.9
+                },
+                {
+                  "text": "because...",
+                  "start": 8.9,
+                  "end": 9.2
                 }
               ]
             },
@@ -481,31 +1026,180 @@
               "style": "impact_big_black",
               "words": [
                 {
-                  "text": "DISCIPLINE?",
-                  "start": 12.8,
-                  "end": 13.8
+                  "text": "LAZY",
+                  "start": 9.4,
+                  "end": 9.9
+                },
+                {
+                  "text": "OR",
+                  "start": 9.9,
+                  "end": 10.2
+                },
+                {
+                  "text": "WEAK",
+                  "start": 10.2,
+                  "end": 10.8
                 }
               ]
             }
           ]
         },
         {
-          "id": "sub_5_checklist",
+          "id": "sub_4_favor",
+          "mode": "composed_stack",
+          "container_end": 16.5,
+          "lines": [
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Body",
+                  "start": 13.9,
+                  "end": 14.3
+                },
+                {
+                  "text": "thinks",
+                  "start": 14.3,
+                  "end": 14.6
+                }
+              ]
+            },
+            {
+              "style": "highlight_green",
+              "words": [
+                {
+                  "text": "DOING",
+                  "start": 15,
+                  "end": 15.5
+                },
+                {
+                  "text": "A",
+                  "start": 15.5,
+                  "end": 15.7
+                },
+                {
+                  "text": "FAVOR",
+                  "start": 15.7,
+                  "end": 16.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sub_5_bunker",
+          "mode": "word_by_word",
+          "style": "impact_big_red",
+          "container_end": 20,
+          "words": [
+            {
+              "text": "BIOLOGICAL",
+              "start": 18.5,
+              "end": 19.2
+            },
+            {
+              "text": "BUNKER",
+              "start": 19.2,
+              "end": 20
+            }
+          ]
+        },
+        {
+          "id": "sub_6_switch",
+          "mode": "composed_stack",
+          "container_end": 31,
+          "lines": [
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Flip",
+                  "start": 26.5,
+                  "end": 26.8
+                },
+                {
+                  "text": "the",
+                  "start": 26.8,
+                  "end": 27
+                },
+                {
+                  "text": "switch...",
+                  "start": 27,
+                  "end": 27.5
+                }
+              ]
+            },
+            {
+              "style": "highlight_green",
+              "words": [
+                {
+                  "text": "NO",
+                  "start": 28.5,
+                  "end": 29
+                },
+                {
+                  "text": "CHANCE",
+                  "start": 30,
+                  "end": 30.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sub_7_mistakes",
           "mode": "vertical_list",
           "style": "checklist_yellow",
-          "container_end": 17.5,
+          "container_end": 37,
           "items": [
             {
-              "text": "1. Study for Exams",
-              "start": 14.5
+              "text": "1. Target Belly Fat",
+              "start": 32.5
             },
             {
-              "text": "2. Build Business",
-              "start": 15.5
+              "text": "2. Three Mistakes",
+              "start": 35
             },
             {
-              "text": "3. Get Fit",
-              "start": 16.5
+              "text": "3. Fix It",
+              "start": 36.5
+            }
+          ]
+        },
+        {
+          "id": "sub_8_bs",
+          "mode": "composed_stack",
+          "container_end": 41.5,
+          "lines": [
+            {
+              "style": "impact_big_red",
+              "words": [
+                {
+                  "text": "NO",
+                  "start": 37,
+                  "end": 37.5
+                },
+                {
+                  "text": "PILLS",
+                  "start": 38,
+                  "end": 38.5
+                }
+              ]
+            },
+            {
+              "style": "label_small_black",
+              "words": [
+                {
+                  "text": "Just",
+                  "start": 39,
+                  "end": 39.3
+                },
+                {
+                  "text": "Biology.",
+                  "start": 39.3,
+                  "end": 40
+                }
+              ]
             }
           ]
         }
@@ -513,6 +1207,6 @@
     },
     "video_path": null,
     "error": null,
-    "audio_path": "projects\\54ba6341\\audio\\audio.wav"
+    "audio_path": "projects\\eb7d70f0\\audio\\audio.wav"
   }
 }

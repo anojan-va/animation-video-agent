@@ -103,7 +103,7 @@ class Builder:
                 base_avatar = Image.open(self.base_avatar_path)
                 
                 # Enhanced prompt for avatar consistency
-                enhanced_prompt = f"Create avatar based on this person with transparent background: {prompt}. Maintain facial features and appearance consistency with the base image. 2D flat vector art style, clean design."
+                enhanced_prompt = f"Create avatar based on this person with transparent background: {prompt}. Maintain facial features and appearance consistency with the base image. 2D flat vector art style, clean design.avatar should cover full body(no half avatar image)"
 
                 # Generate using Google Gemini
                 response = self.genai_client.models.generate_content(
