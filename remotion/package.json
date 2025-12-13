@@ -1,9 +1,12 @@
 {
-  "name": "kinetic-video-renderer",
+  "name": "gym-animation-agent",
   "version": "1.0.0",
   "scripts": {
-    "start": "remotion preview",
-    "render": "remotion render Video out/video.mp4 --concurrency=1",
+    "start": "remotion preview src/index.tsx",
+    "build": "remotion render src/index.tsx MainComposition out/video.mp4 --concurrency=1",
+    "render": "remotion render src/index.tsx MainComposition out/video.mp4 --concurrency=1",
+    "dev": "remotion preview src/index.tsx",
+    "typecheck": "tsc -p tsconfig.json",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {
@@ -12,7 +15,7 @@
     "remotion": "^4.0.0"
   },
   "devDependencies": {
-    "@remotion/cli": "^4.0.0",
+    "@remotion/cli": "^4.0.382",
     "@types/react": "^18.2.43",
     "typescript": "^5.2.2"
   }

@@ -1,0 +1,112 @@
+{
+  "project_settings": {
+    "fps": 30
+  },
+  "visual_track": [
+    {
+      "id": "scene_01_intro",
+      "start": 0.0,
+      "duration": 5.0,
+      "layout": "narrator_left_prop_right",
+      "assets": {
+        "avatar": {
+          "id": "avatar_stoic_standing",
+          "prompt": "2D flat vector art, stoic man with a beard, athletic build, wearing a black t-shirt and shorts, standing confidently with arms crossed, white background, high quality illustration"
+        },
+        "prop": {
+          "id": "prop_japanese_gate",
+          "prompt": "2D flat vector art, a traditional red Japanese Torii gate, minimal design, white background"
+        }
+      }
+    },
+    {
+      "id": "scene_02_simplicity",
+      "start": 5.0,
+      "duration": 6.0,
+      "layout": "narrator_center",
+      "assets": {
+        "avatar": {
+          "id": "avatar_stoic_shrugging",
+          "prompt": "2D flat vector art, stoic man with a beard, wearing a black t-shirt, shrugging shoulders with palms up, skeptical expression, white background"
+        },
+        "prop": null
+      }
+    },
+    {
+      "id": "scene_03_result",
+      "start": 11.0,
+      "duration": 3.0,
+      "layout": "narrator_left_prop_right",
+      "assets": {
+        "avatar": {
+          "id": "avatar_stoic_pointing",
+          "prompt": "2D flat vector art, stoic man with a beard, wearing a black t-shirt, pointing index finger at the camera, serious expression, white background"
+        },
+        "prop": {
+          "id": "prop_gear_machine",
+          "prompt": "2D flat vector art, a complex mechanical gear system glowing blue, representing a machine, white background"
+        }
+      }
+    },
+    {
+      "id": "scene_04_study",
+      "start": 14.0,
+      "duration": 4.0,
+      "layout": "narrator_left_prop_right",
+      "assets": {
+        "avatar": {
+          "id": "avatar_stoic_thinking",
+          "prompt": "2D flat vector art, stoic man with a beard, wearing a black t-shirt, hand on chin thinking, white background"
+        },
+        "prop": {
+          "id": "prop_books",
+          "prompt": "2D flat vector art, a tall stack of textbooks with a coffee mug on top, white background"
+        }
+      }
+    }
+  ],
+  "text_track": [
+    {
+      "text": "Japanese System",
+      "start": 0.2,
+      "end": 1.5,
+      "style": "highlight_red"
+    },
+    {
+      "text": "Discipline Machines",
+      "start": 3.0,
+      "end": 4.8,
+      "style": "highlight_red"
+    },
+    {
+      "text": "So Simple",
+      "start": 5.8,
+      "end": 6.8,
+      "style": "normal"
+    },
+    {
+      "text": "Won't Work?",
+      "start": 8.5,
+      "end": 9.5,
+      "style": "normal"
+    },
+    {
+      "text": "Until it DOES",
+      "start": 10.0,
+      "end": 10.9,
+      "style": "highlight_green"
+    },
+    {
+      "text": "Seeks Discipline?",
+      "start": 12.0,
+      "end": 13.8,
+      "style": "normal"
+    },
+    {
+      "text": "Study for Exams",
+      "start": 14.5,
+      "end": 16.5,
+      "style": "highlight_red"
+    }
+  ]
+}

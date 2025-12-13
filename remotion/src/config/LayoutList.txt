@@ -1,0 +1,17 @@
+Here is the list of layouts I like to keep.
+
+
+1. Avatar is in center (cover full screen as much as possible, no text,no props)
+2.Prop is in center (cover full screen as much as possible, no text,no avatar)
+3.text is in center (cover full screen as much as possible, no avatar,no props , keep texts in center screen and keep top and bottom,left right margin 15 %)
+4. Avatar in right and text in left (avatar cover 30 % with,5% margin between avatar and text and text cover 65% with)
+5.Prop in right and text in left (prop cover 30 % with,5% margin between prop and text and text cover 65% with)
+6. Avatar in left and text in right(avatar cover 30 % with,5% margin between avatar and text and text cover 65% with)
+7. Prop in left and text in right(Prop cover 30 % with,5% margin between prop and text and text cover 65% with)
+8.Avatar in middle and text in left and right(avatar cover center 30%,text cover right and left)
+9.text in top center and avatar in bottom center (text covers 35 % of height,middle 5 % margin and avatar covers 55% of height)
+10.text in top center and prop in bottom center (text covers 35 % of height,middle 5 % margin and prop covers 55% of height)
+11.Avatar in center and prop in left and prop in right (avatar covers 40% of width and middle of each have 5 % margin and both props cover remaining width equally)
+12.prop in center and prop in left and prop in right (have 5 % margin and all 3 props cover remaining width equally)
+13.Avatar in right and prop in left (prop cover 40 % with,10% margin between avatar  cover 50% width)
+14.Avatar in left and prop in right(prop cover 40 % with,10% margin between avatar  cover 50% width)

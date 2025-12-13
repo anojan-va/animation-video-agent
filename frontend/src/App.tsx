@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, RotateCcw, AlertCircle, CheckCircle, Film, Download } from 'lucide-react';
+import { Play, RotateCcw, AlertCircle, CheckCircle, Film, Download, FolderOpen, Trash2, Clock } from 'lucide-react';
 import FileUploader from './components/FileUploader';
 import LogConsole from './components/LogConsole';
 import AssetGrid from './components/AssetGrid';
@@ -18,6 +18,9 @@ interface AppState {
   error: string | null;
   videoGenerated: boolean;
   videoPath: string | null;
+  projectId: string | null;
+  projects: Array<{ id: string; status: string; created_at: string }>;
+  showProjectsList: boolean;
 }
 
 function App() {
@@ -32,6 +35,9 @@ function App() {
     error: null,
     videoGenerated: false,
     videoPath: null,
+    projectId: null,
+    projects: [],
+    showProjectsList: false,
   });
 
   const { logs: wsLogs } = useWebSocket();
@@ -53,6 +59,70 @@ function App() {
     }));
   };
 
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch('/api/projects');
+      const data = await res.json();
+      setState((prev) => ({
+        ...prev,
+        projects: data.projects || [],
+      }));
+    } catch (err) {
+      console.error('Failed to fetch projects:', err);
+    }
+  };
+
+  const loadProject = async (projectId: string) => {
+    try {
+      const res = await fetch(`/api/projects/${projectId}`);
+      const project = await res.json();
+      
+      setState((prev) => ({
+        ...prev,
+        projectId,
+        status: project.status === 'completed' ? 'ready' : project.status,
+        videoGenerated: !!project.video_path,
+        videoPath: project.video_path,
+        error: project.error,
+        showProjectsList: false,
+      }));
+      
+      if (project.status === 'completed') {
+        fetchAssets();
+      }
+    } catch (err) {
+      console.error('Failed to load project:', err);
+    }
+  };
+
+  const deleteProject = async (projectId: string) => {
+    try {
+      const res = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE',
+      });
+      
+      if (res.ok) {
+        fetchProjects();
+        if (state.projectId === projectId) {
+          setState((prev) => ({
+            ...prev,
+            projectId: null,
+            status: 'idle',
+            assets: [],
+            videoGenerated: false,
+            videoPath: null,
+          }));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to delete project:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
   const handleStartGeneration = async () => {
     if (!state.audioFile || !state.scriptFile) {
       setState((prev) => ({
@@ -70,52 +140,70 @@ function App() {
         logs: [],
       }));
 
-      // Upload files
-      const formData = new FormData();
-      formData.append('audio', state.audioFile);
-      formData.append('script', state.scriptFile);
+      // Read and parse script file
+      const scriptText = await state.scriptFile.text();
+      const scriptData = JSON.parse(scriptText);
 
-      const uploadRes = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!uploadRes.ok) {
-        throw new Error('Upload failed');
+      // Handle audio file - we'll let the backend handle it directly
+      let audioFile = null;
+      if (state.audioFile) {
+        // Convert audio file to base64 for sending in JSON
+        const audioBase64 = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(state.audioFile);
+        });
+        audioFile = audioBase64 as string;
       }
 
-      const uploadData = await uploadRes.json();
-
-      // Start generation
-      const genRes = await fetch('/api/generate', {
+      // Create project
+      const projectRes = await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          script_path: uploadData.script_path,
-          audio_path: uploadData.audio_path,
+          script_data: scriptData,
+          audio_file: audioFile,
         }),
+      });
+
+      if (!projectRes.ok) {
+        throw new Error('Project creation failed');
+      }
+
+      const projectData = await projectRes.json();
+      const projectId = projectData.project_id;
+
+      setState((prev) => ({
+        ...prev,
+        projectId,
+      }));
+
+      // Refresh projects list
+      fetchProjects();
+
+      // Start generation
+      const genRes = await fetch(`/api/projects/${projectId}/generate`, {
+        method: 'POST',
       });
 
       if (!genRes.ok) {
         throw new Error('Generation failed');
       }
 
-      // Poll for status
+      // Poll for project status
       const pollInterval = setInterval(async () => {
-        const statusRes = await fetch('/api/status');
+        const statusRes = await fetch(`/api/projects/${projectId}`);
         const statusData = await statusRes.json();
 
         setState((prev) => ({
           ...prev,
-          status: statusData.status,
-          generatedCount: statusData.generated_assets,
-          totalCount: statusData.total_assets,
+          status: statusData.status === 'completed' ? 'ready' : statusData.status,
           error: statusData.error,
         }));
 
-        if (statusData.status === 'ready' || statusData.status === 'error') {
+        if (statusData.status === 'completed' || statusData.status === 'failed') {
           clearInterval(pollInterval);
-          if (statusData.status === 'ready') {
+          if (statusData.status === 'completed') {
             fetchAssets();
           }
         }
@@ -130,6 +218,14 @@ function App() {
   };
 
   const handleRetry = async () => {
+    if (!state.projectId) {
+      setState((prev) => ({
+        ...prev,
+        error: 'No project to retry',
+      }));
+      return;
+    }
+
     try {
       setState((prev) => ({
         ...prev,
@@ -137,7 +233,7 @@ function App() {
         error: null,
       }));
 
-      const res = await fetch('/api/retry', {
+      const res = await fetch(`/api/projects/${state.projectId}/retry`, {
         method: 'POST',
       });
 
@@ -145,22 +241,20 @@ function App() {
         throw new Error('Retry failed');
       }
 
-      // Poll for status
+      // Poll for project status
       const pollInterval = setInterval(async () => {
-        const statusRes = await fetch('/api/status');
+        const statusRes = await fetch(`/api/projects/${state.projectId}`);
         const statusData = await statusRes.json();
 
         setState((prev) => ({
           ...prev,
-          status: statusData.status,
-          generatedCount: statusData.generated_assets,
-          totalCount: statusData.total_assets,
+          status: statusData.status === 'completed' ? 'ready' : statusData.status,
           error: statusData.error,
         }));
 
-        if (statusData.status === 'ready' || statusData.status === 'error') {
+        if (statusData.status === 'completed' || statusData.status === 'failed') {
           clearInterval(pollInterval);
-          if (statusData.status === 'ready') {
+          if (statusData.status === 'completed') {
             fetchAssets();
           }
         }
@@ -168,18 +262,35 @@ function App() {
     } catch (err) {
       setState((prev) => ({
         ...prev,
+        status: 'error',
         error: err instanceof Error ? err.message : 'Unknown error',
       }));
     }
   };
 
   const fetchAssets = async () => {
+    if (!state.projectId) return;
+    
     try {
-      const res = await fetch('/api/assets');
+      const res = await fetch(`/api/projects/${state.projectId}/render-config`);
       const data = await res.json();
+      
+      // Extract assets from the render config
+      const assets = [];
+      if (data.visual_track) {
+        data.visual_track.forEach((scene: any) => {
+          if (scene.avatar?.asset) {
+            assets.push({ name: scene.avatar.asset, path: `/assets/${scene.avatar.asset}` });
+          }
+          if (scene.prop?.asset) {
+            assets.push({ name: scene.prop.asset, path: `/assets/${scene.prop.asset}` });
+          }
+        });
+      }
+      
       setState((prev) => ({
         ...prev,
-        assets: data.assets,
+        assets,
       }));
     } catch (err) {
       console.error('Failed to fetch assets:', err);
@@ -187,6 +298,14 @@ function App() {
   };
 
   const handleRenderVideo = async () => {
+    if (!state.projectId) {
+      setState((prev) => ({
+        ...prev,
+        error: 'No project to render',
+      }));
+      return;
+    }
+
     try {
       setState((prev) => ({
         ...prev,
@@ -194,7 +313,7 @@ function App() {
         error: null,
       }));
 
-      const res = await fetch('/api/render-video', {
+      const res = await fetch(`/api/projects/${state.projectId}/render-video`, {
         method: 'POST',
       });
 
@@ -254,13 +373,83 @@ function App() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
-            AI Kinetic Video Agent
-          </h1>
-          <p className="text-slate-300">
-            Transform your voice and script into stunning animated videos
-          </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                AI Kinetic Video Agent
+              </h1>
+              <p className="text-slate-300">
+                Transform your voice and script into stunning animated videos
+              </p>
+            </div>
+            <button
+              onClick={() => setState((prev) => ({ ...prev, showProjectsList: !prev.showProjectsList }))}
+              className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
+            >
+              <FolderOpen className="h-5 w-5" />
+              {state.showProjectsList ? 'Hide Projects' : 'Show Projects'} ({state.projects.length})
+            </button>
+          </div>
         </div>
+
+        {/* Projects List */}
+        {state.showProjectsList && (
+          <div className="mb-8 bg-slate-800 rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-white mb-4">All Projects</h2>
+            {state.projects.length === 0 ? (
+              <p className="text-slate-400">No projects yet. Create your first project!</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {state.projects.map((project) => (
+                  <div
+                    key={project.id}
+                    className={`bg-slate-700 rounded-lg p-4 border-2 ${
+                      project.id === state.projectId
+                        ? 'border-blue-500'
+                        : project.status === 'completed'
+                        ? 'border-green-600'
+                        : project.status === 'failed'
+                        ? 'border-red-600'
+                        : 'border-slate-600'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-white font-semibold">Project {project.id}</h3>
+                      <div className="flex gap-2">
+                        {project.status === 'completed' && (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        )}
+                        {project.status === 'failed' && (
+                          <AlertCircle className="h-4 w-4 text-red-500" />
+                        )}
+                        {project.status === 'processing' && (
+                          <Clock className="h-4 w-4 text-blue-500" />
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-3">
+                      {new Date(project.created_at).toLocaleString()}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => loadProject(project.id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition"
+                      >
+                        Load
+                      </button>
+                      <button
+                        onClick={() => deleteProject(project.id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -276,9 +465,14 @@ function App() {
                   <h3 className="font-semibold text-gray-900 capitalize">
                     {state.status}
                   </h3>
+                  {state.projectId && (
+                    <p className="text-sm text-gray-600">
+                      Project: {state.projectId}
+                    </p>
+                  )}
                   {state.status === 'processing' && (
                     <p className="text-sm text-gray-600">
-                      {state.generatedCount} / {state.totalCount} assets
+                      Processing project...
                     </p>
                   )}
                 </div>
@@ -337,24 +531,6 @@ function App() {
               )}
             </div>
 
-            {/* Progress Bar */}
-            {state.status === 'processing' && state.totalCount > 0 && (
-              <div className="bg-white rounded-lg p-4">
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${(state.generatedCount / state.totalCount) * 100}%`,
-                    }}
-                  />
-                </div>
-                <p className="text-sm text-gray-600 mt-2 text-center">
-                  {Math.round(
-                    (state.generatedCount / state.totalCount) * 100
-                  )}%
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Right Column - Logs and Assets */}

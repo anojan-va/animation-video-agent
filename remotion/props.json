@@ -1,0 +1,171 @@
+{
+  "project_settings": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080
+  },
+  "scenes": [
+    {
+      "id": "scene_01_intro",
+      "start": 0.0,
+      "duration": 5.0,
+      "layout": "avatar_left_prop_right", 
+      "elements": [
+        {
+          "type": "image",
+          "id": "gym_guy_crossed_arms",
+          "role": "avatar",
+          "prompt": "2D flat vector art, stoic man with beard, black t-shirt, athletic build, standing confident with arms crossed, white background",
+          "anim_enter": "slide_up",
+          "anim_idle": "breathe",
+          "local_path": "assets/gym_guy_crossed_arms.png"
+        },
+        {
+          "type": "image",
+          "id": "japanese_gate",
+          "role": "prop", 
+          "prompt": "2D flat vector art, traditional Japanese torii gate, cherry blossom trees, serene atmosphere, white background",
+          "anim_enter": "slide_right",
+          "anim_idle": "float",
+          "local_path": "assets/japanese_gate.png"
+        }
+      ]
+    },
+    {
+      "id": "scene_02_challenge",
+      "start": 5.0,
+      "duration": 4.0,
+      "layout": "avatar_right_prop_left",
+      "elements": [
+        {
+          "type": "image",
+          "id": "gym_guy_shrug",
+          "role": "avatar",
+          "prompt": "2D flat vector art, man shrugging shoulders, confused expression, hands up, white background",
+          "anim_enter": "slide_left",
+          "anim_idle": "breathe",
+          "local_path": "assets/gym_guy_shrug.png"
+        },
+        {
+          "type": "image",
+          "id": "gear_machine",
+          "role": "prop",
+          "prompt": "2D flat vector art, complex mechanical gear system glowing blue, representing a machine, white background",
+          "anim_enter": "spin_3d",
+          "anim_idle": "spin_slow",
+          "local_path": "assets/gear_machine.png"
+        }
+      ]
+    },
+    {
+      "id": "scene_03_solution",
+      "start": 9.0,
+      "duration": 4.5,
+      "layout": "text_top_avatar_bottom",
+      "elements": [
+        {
+          "type": "image",
+          "id": "gym_guy_pointing",
+          "role": "avatar",
+          "prompt": "2D flat vector art, man pointing index finger at camera, intense serious look, white background",
+          "anim_enter": "slide_up",
+          "anim_idle": "breathe",
+          "local_path": "assets/gym_guy_pointing.png"
+        }
+      ]
+    },
+    {
+      "id": "scene_04_success",
+      "start": 13.5,
+      "duration": 4.0,
+      "layout": "text_top_avatar_bottom",
+      "elements": [
+        {
+          "type": "image",
+          "id": "gym_guy_thinking",
+          "role": "avatar",
+          "prompt": "2D flat vector art, man holding chin in thought, looking upward, white background",
+          "anim_enter": "slide_left",
+          "anim_idle": "breathe",
+          "local_path": "assets/gym_guy_thinking.png"
+        }
+      ]
+    }
+  ],
+  "subtitles": [
+    {
+      "id": "sub_1_intro",
+      "mode": "word_by_word",
+      "style": "impact_big_red",
+      "container_end": 4.5,
+      "words": [
+        { "text": "DISCIPLINE", "start": 1.5, "end": 2.5 },
+        { "text": "MACHINES", "start": 2.5, "end": 4.5 }
+      ]
+    },
+    {
+      "id": "sub_2_skeptic",
+      "mode": "composed_stack",
+      "container_end": 9.5,
+      "lines": [
+        {
+          "style": "label_small_black",
+          "words": [
+            { "text": "So", "start": 5.8, "end": 6.2 },
+            { "text": "Simple...", "start": 6.2, "end": 6.8 }
+          ]
+        },
+        {
+          "style": "impact_big_red",
+          "words": [
+            { "text": "WON'T", "start": 7.5, "end": 8.0 },
+            { "text": "WORK?", "start": 8.0, "end": 9.0 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sub_3_turn",
+      "mode": "word_by_word",
+      "style": "highlight_green",
+      "container_end": 10.9,
+      "words": [
+        { "text": "UNTIL", "start": 10.0, "end": 10.3 },
+        { "text": "IT", "start": 10.3, "end": 10.6 },
+        { "text": "DOES.", "start": 10.6, "end": 10.9 }
+      ]
+    },
+    {
+      "id": "sub_4_question",
+      "mode": "composed_stack",
+      "container_end": 13.8,
+      "lines": [
+        {
+          "style": "label_small_black",
+          "words": [
+            { "text": "Seeks", "start": 12.0, "end": 12.5 },
+            { "text": "More", "start": 12.5, "end": 12.8 }
+          ]
+        },
+        {
+          "style": "impact_big_black",
+          "words": [
+            { "text": "DISCIPLINE?", "start": 12.8, "end": 13.8 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sub_5_checklist",
+      "mode": "vertical_list",
+      "style": "checklist_yellow",
+      "container_end": 17.5,
+      "items": [
+        { "text": "1. Study for Exams", "start": 14.5 },
+        { "text": "2. Build Business", "start": 15.5 },
+        { "text": "3. Get Fit", "start": 16.5 }
+      ]
+    }
+  ],
+  "audio_path": "audio/audio.wav"
+}

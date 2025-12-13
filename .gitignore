@@ -6,6 +6,7 @@ backend/__pycache__/
 *.pyo
 *.egg-info/
 .Python
+venv/
 
 # Environment
 .env
